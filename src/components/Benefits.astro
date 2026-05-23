@@ -1,0 +1,119 @@
+---
+const features = [
+  {
+    icon: "fitness_center",
+    title: "Entrenamiento inteligente",
+    desc: "Planificá tus cargas y mejorá tu rendimiento con IA aplicada.",
+    accent: "primary",
+  },
+  {
+    icon: "bedtime",
+    title: "Sueño y recuperación",
+    desc: "Trackeá tu descanso y prevení sobrecargas con análisis nocturno.",
+    accent: "secondary",
+  },
+  {
+    icon: "nutrition",
+    title: "Nutrición y energía",
+    desc: "Alertas y recomendaciones personalizadas basadas en tu desgaste real.",
+    accent: "tertiary",
+  },
+];
+---
+
+<section class="py-24 bg-white/[0.02]">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 space-y-4 reveal">
+      <h2 class="font-display text-4xl font-bold tracking-tight">
+        TODO EN EQUILIBRIO
+      </h2>
+      <p class="text-white/50 max-w-xl mx-auto">
+        Tecnología diseñada para optimizar cada pilar de tu carrera deportiva.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Feature Cards -->
+      {
+        features.map((f, i) => (
+          <div
+            class={`glass-card p-8 group hover:border-${f.accent}/50 transition-all cursor-default reveal`}
+            style={`transition-delay: ${i * 100}ms`}
+          >
+            <div
+              class={`w-12 h-12 rounded-xl bg-${f.accent}/10 flex items-center justify-center text-${f.accent} mb-6 group-hover:scale-110 transition-transform`}
+            >
+              <span class="material-symbols-outlined text-4xl">{f.icon}</span>
+            </div>
+            <h3
+              class={`text-xl font-semibold mb-2 ${f.accent !== "primary" ? `text-${f.accent}` : ""}`}
+            >
+              {f.title}
+            </h3>
+            <p class="text-white/50 leading-relaxed">{f.desc}</p>
+          </div>
+        ))
+      }
+
+      <!-- Agenda Card (wide) -->
+      <div
+        class="md:col-span-2 glass-card p-8 flex flex-col md:flex-row gap-8 items-center group overflow-hidden relative reveal"
+        style="transition-delay: 300ms;"
+      >
+        <div class="flex-1">
+          <div
+            class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6"
+          >
+            <span class="material-symbols-outlined text-4xl">calendar_month</span
+            >
+          </div>
+          <h3 class="text-2xl font-bold mb-2">Agenda deportiva</h3>
+          <p class="text-white/50 leading-relaxed">
+            Centralizá sesiones, competiciones y tiempos de estudio en un solo
+            lugar sincronizado.
+          </p>
+        </div>
+        <div
+          class="flex-1 w-full translate-x-10 group-hover:translate-x-0 transition-transform duration-700"
+        >
+          <div
+            class="bg-black/40 p-2 rounded-xl border border-white/10 shadow-2xl"
+          >
+            <div class="h-40 w-full bg-white/5 rounded-lg p-4">
+              <div class="flex justify-between mb-4">
+                <div class="w-1/2 h-4 bg-primary/20 rounded bar-grow"></div>
+                <div
+                  class="w-1/4 h-4 bg-secondary/20 rounded bar-grow"
+                  style="transition-delay: 0.2s;"
+                ></div>
+              </div>
+              <div class="space-y-2">
+                <div class="h-2 bg-white/5 rounded w-full"></div>
+                <div class="h-2 bg-white/5 rounded w-5/6"></div>
+                <div class="h-2 bg-white/5 rounded w-4/6"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts Card -->
+      <div
+        class="glass-card p-8 group border-red-500/10 hover:border-red-500/50 transition-all bg-red-500/5 reveal"
+        style="transition-delay: 400ms;"
+      >
+        <div
+          class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 mb-6"
+        >
+          <span class="material-symbols-outlined text-4xl">warning</span>
+        </div>
+        <h3 class="text-xl font-semibold mb-2 text-red-400">
+          Alertas preventivas
+        </h3>
+        <p class="text-white/50 leading-relaxed">
+          Detectamos riesgos para que evites lesiones y sobre-entrenamiento.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

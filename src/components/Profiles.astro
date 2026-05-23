@@ -1,0 +1,187 @@
+---
+const profiles = [
+  {
+    id: "atleta",
+    icon: "sprint",
+    label: "Atletas",
+    tagline: "Organizá y optimizá tu rendimiento.",
+    accent: "primary",
+    accentHex: "#8fd6ff",
+    accentDim: "rgba(143,214,255,0.08)",
+    accentBorder: "rgba(143,214,255,0.25)",
+    stats: [
+      { value: "98%", label: "Readiness score" },
+      { value: "−34%", label: "Lesiones" },
+      { value: "2.1×", label: "Progreso" },
+    ],
+    pills: ["Carga semanal", "Sueño & HRV", "Nutrición", "Alertas"],
+    description:
+      "Tu centro de comando personal. Cada dato de entrenamiento, descanso y nutrición unificado para que tomés decisiones más inteligentes cada día.",
+  },
+  {
+    id: "entrenador",
+    icon: "group",
+    label: "Entrenadores",
+    tagline: "Gestioná equipos y prevení lesiones.",
+    accent: "secondary",
+    accentHex: "#70df31",
+    accentDim: "rgba(112,223,49,0.08)",
+    accentBorder: "rgba(112,223,49,0.25)",
+    stats: [
+      { value: "12+", label: "Atletas en tiempo real" },
+      { value: "−41%", label: "Riesgo de baja" },
+      { value: "3×", label: "Capacidad de análisis" },
+    ],
+    pills: ["Panel de equipo", "Alertas de riesgo", "Carga grupal", "Planificación"],
+    description:
+      "Supervisá el estado físico de cada atleta en tiempo real. Detectá sobrecargas antes de que se vuelvan lesiones y ajustá la planificación táctica con datos duros.",
+  },
+  {
+    id: "padre",
+    icon: "family_restroom",
+    label: "Padres & Tutores",
+    tagline: "Acompañá el desarrollo deportivo.",
+    accent: "tertiary",
+    accentHex: "#fcc554",
+    accentDim: "rgba(252,197,84,0.08)",
+    accentBorder: "rgba(252,197,84,0.25)",
+    stats: [
+      { value: "360°", label: "Visibilidad" },
+      { value: "100%", label: "Tranquilidad" },
+      { value: "1 app", label: "Todo centralizado" },
+    ],
+    pills: ["Agenda unificada", "Alertas de salud", "Progreso académico", "Comunicación"],
+    description:
+      "Seguí el progreso de tu hijo sin invadir su autonomía. Recibí alertas cuando algo importa y coordiná con el entrenador desde un solo lugar.",
+  },
+];
+---
+
+<section class="py-24 relative overflow-hidden">
+  <!-- Ambient glow -->
+  <div
+    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(143,214,255,0.04),transparent_70%)] pointer-events-none"
+  ></div>
+
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Header -->
+    <div class="text-center mb-16 space-y-4 reveal">
+      <div
+        class="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary"
+      >
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        <span class="text-xs font-semibold tracking-widest uppercase"
+          >Diseñado para vos</span
+        >
+      </div>
+      <h2
+        class="font-display text-4xl md:text-5xl font-extrabold tracking-tight"
+      >
+        ¿Quién sos en el campo?
+      </h2>
+      <p class="text-white/50 max-w-xl mx-auto text-lg">
+        PULSO se adapta a tu rol. Mismo ecosistema, experiencia personalizada.
+      </p>
+    </div>
+
+    <!-- Profile Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        profiles.map((p, i) => (
+          <div
+            class="profile-card group relative rounded-2xl overflow-hidden cursor-pointer reveal"
+            style={`transition-delay: ${i * 120}ms; --accent: ${p.accentHex}; --accent-dim: ${p.accentDim}; --accent-border: ${p.accentBorder};`}
+            data-profile={p.id}
+          >
+            {/* Card background */}
+            <div class="absolute inset-0 rounded-2xl border border-[var(--accent-border)] bg-white/[0.03] backdrop-blur-sm transition-all duration-500 group-hover:border-[var(--accent)] group-hover:bg-[var(--accent-dim)]" />
+
+            {/* Top glow line */}
+            <div
+              class="absolute top-0 left-6 right-6 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={`background: linear-gradient(90deg, transparent, ${p.accentHex}, transparent);`}
+            />
+
+            <div class="relative z-10 p-8 flex flex-col gap-6">
+              {/* Icon + Label */}
+              <div class="flex items-start justify-between">
+                <div
+                  class="w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
+                  style={`background: ${p.accentDim}; border: 1px solid ${p.accentBorder};`}
+                >
+                  <span
+                    class="material-symbols-outlined text-3xl"
+                    style={`color: ${p.accentHex};`}
+                  >
+                    {p.icon}
+                  </span>
+                </div>
+                <span
+                  class="text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full"
+                  style={`color: ${p.accentHex}; background: ${p.accentDim}; border: 1px solid ${p.accentBorder};`}
+                >
+                  {p.label}
+                </span>
+              </div>
+
+              {/* Tagline */}
+              <div>
+                <h3 class="font-display text-xl font-bold mb-2" style={`color: ${p.accentHex};`}>
+                  {p.label}
+                </h3>
+                <p class="text-2xl font-bold text-white leading-snug">
+                  {p.tagline}
+                </p>
+              </div>
+
+              {/* Description */}
+              <p class="text-sm text-white/50 leading-relaxed">{p.description}</p>
+
+              {/* Stats row */}
+              <div class="grid grid-cols-3 gap-3">
+                {p.stats.map((s) => (
+                  <div
+                    class="rounded-xl p-3 text-center"
+                    style={`background: ${p.accentDim}; border: 1px solid ${p.accentBorder};`}
+                  >
+                    <div
+                      class="text-lg font-bold font-display"
+                      style={`color: ${p.accentHex};`}
+                    >
+                      {s.value}
+                    </div>
+                    <div class="text-[10px] text-white/40 mt-1 leading-tight">
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Feature pills */}
+              <div class="flex flex-wrap gap-2">
+                {p.pills.map((pill) => (
+                  <span
+                    class="text-[11px] font-semibold px-3 py-1 rounded-full"
+                    style={`color: ${p.accentHex}; background: ${p.accentDim}; border: 1px solid ${p.accentBorder};`}
+                  >
+                    {pill}
+                  </span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <button
+                class="w-full py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] mt-auto"
+                style={`background: ${p.accentDim}; border: 1px solid ${p.accentBorder}; color: ${p.accentHex};`}
+                onmouseover={`this.style.background='${p.accentHex}'; this.style.color='#050505';`}
+                onmouseout={`this.style.background='${p.accentDim}'; this.style.color='${p.accentHex}';`}
+              >
+                Empezar como {p.label.split(" ")[0]} →
+              </button>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

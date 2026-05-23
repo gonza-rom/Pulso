@@ -1,0 +1,45 @@
+---
+const links = [
+  { label: "Privacy Policy", href: "#" },
+  { label: "Terms of Service", href: "#" },
+  { label: "Athlete Support", href: "#" },
+  { label: "System Status", href: "#" },
+];
+---
+
+<footer
+  class="w-full py-16 px-6 bg-white/[0.02] border-t border-white/5"
+>
+  <div
+    class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4"
+  >
+    <div class="space-y-2 text-center md:text-left">
+      <div class="font-display text-2xl font-black">PULSO</div>
+      <p class="text-sm text-white/40">
+        © 2024 PULSO. Engineered for the Elite athlete.
+      </p>
+    </div>
+
+    <nav class="flex flex-wrap justify-center gap-8">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-xs font-semibold tracking-widest uppercase text-white/40 hover:text-primary transition-colors"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex gap-4">
+      <a
+        href="#"
+        class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:text-primary hover:border-primary/40 transition-all duration-300"
+      >
+        <span class="material-symbols-outlined">share</span>
+      </a>
+    </div>
+  </div>
+</footer>

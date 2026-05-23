@@ -1,0 +1,222 @@
+---
+const pillars = [
+  {
+    number: "01",
+    icon: "hub",
+    title: "Datos centralizados",
+    headline: "Un solo lugar para todo.",
+    body: "Sueño, carga de entrenamiento, nutrición, agenda académica. PULSO los unifica para que nunca pierdas contexto de tu progreso real.",
+    accent: "primary",
+    accentHex: "#8fd6ff",
+    accentDim: "rgba(143,214,255,0.07)",
+    accentBorder: "rgba(143,214,255,0.2)",
+    visual: "hub",
+  },
+  {
+    number: "02",
+    icon: "health_and_safety",
+    title: "Prevención de lesiones",
+    headline: "Actuamos antes de que duela.",
+    body: "Nuestro motor de IA detecta patrones de sobrecarga hasta 72hs antes de que se conviertan en lesiones. Entrenás más, parás menos.",
+    accent: "secondary",
+    accentHex: "#70df31",
+    accentDim: "rgba(112,223,49,0.07)",
+    accentBorder: "rgba(112,223,49,0.2)",
+    visual: "shield",
+  },
+  {
+    number: "03",
+    icon: "share",
+    title: "Ecosistema conectado",
+    headline: "Atleta + Coach + Tutor.",
+    body: "La primera app donde los tres roles comparten datos en tiempo real. Cada decisión se toma con información completa, no con suposiciones.",
+    accent: "tertiary",
+    accentHex: "#fcc554",
+    accentDim: "rgba(252,197,84,0.07)",
+    accentBorder: "rgba(252,197,84,0.2)",
+    visual: "network",
+  },
+  {
+    number: "04",
+    icon: "psychology",
+    title: "Rendimiento inteligente",
+    headline: "IA que aprende con vos.",
+    body: "Cada semana el sistema aprende de tus respuestas. Las recomendaciones se afinan hasta conocerte mejor que cualquier planilla de Excel.",
+    accent: "primary",
+    accentHex: "#8fd6ff",
+    accentDim: "rgba(143,214,255,0.07)",
+    accentBorder: "rgba(143,214,255,0.2)",
+    visual: "brain",
+  },
+];
+---
+
+<section class="py-24 bg-white/[0.015] relative overflow-hidden">
+  <!-- Top border glow -->
+  <div
+    class="absolute top-0 left-0 right-0 h-[1px]"
+    style="background: linear-gradient(90deg, transparent, rgba(143,214,255,0.3), rgba(112,223,49,0.3), transparent);"
+  ></div>
+
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Header -->
+    <div class="max-w-2xl mb-20 reveal">
+      <p class="text-xs font-bold tracking-widest uppercase text-primary/70 mb-4">
+        El diferencial
+      </p>
+      <h2
+        class="font-display text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6"
+      >
+        No es una agenda.<br />
+        <span class="text-gradient">Es inteligencia deportiva.</span>
+      </h2>
+      <p class="text-lg text-white/50 leading-relaxed">
+        PULSO existe porque los datos aislados no sirven. El valor real está en
+        conectarlos, interpretarlos y actuar antes de que sea tarde.
+      </p>
+    </div>
+
+    <!-- Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        pillars.map((p, i) => (
+          <div
+            class="pillar-card group relative rounded-2xl overflow-hidden reveal"
+            style={`transition-delay: ${i * 100}ms;`}
+          >
+            {/* Background */}
+            <div
+              class="absolute inset-0 rounded-2xl border transition-all duration-500"
+              style={`background: ${p.accentDim}; border-color: ${p.accentBorder};`}
+            />
+
+            {/* Hover overlay */}
+            <div
+              class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={`background: radial-gradient(circle at 30% 50%, ${p.accentDim} 0%, transparent 70%);`}
+            />
+
+            <div class="relative z-10 p-8 flex gap-6">
+              {/* Left: Number + Icon */}
+              <div class="flex flex-col items-center gap-4 pt-1">
+                <span
+                  class="font-display text-xs font-bold opacity-30"
+                  style={`color: ${p.accentHex};`}
+                >
+                  {p.number}
+                </span>
+                <div
+                  class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500"
+                  style={`border: 1px solid ${p.accentBorder}; background: rgba(0,0,0,0.3);`}
+                >
+                  <span
+                    class="material-symbols-outlined text-2xl"
+                    style={`color: ${p.accentHex};`}
+                  >
+                    {p.icon}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right: Content */}
+              <div class="flex-1 space-y-3">
+                <span
+                  class="text-[10px] font-bold tracking-widest uppercase"
+                  style={`color: ${p.accentHex};`}
+                >
+                  {p.title}
+                </span>
+                <h3 class="font-display text-xl font-bold text-white leading-snug">
+                  {p.headline}
+                </h3>
+                <p class="text-sm text-white/50 leading-relaxed">{p.body}</p>
+              </div>
+            </div>
+
+            {/* Bottom accent line */}
+            <div
+              class="absolute bottom-0 left-8 right-8 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={`background: linear-gradient(90deg, transparent, ${p.accentHex}, transparent);`}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Bottom connector visual -->
+    <div class="mt-16 reveal">
+      <div
+        class="rounded-2xl border border-white/5 bg-white/[0.02] p-8 flex flex-col md:flex-row items-center justify-between gap-8"
+      >
+        <!-- Left: Ecosystem nodes visual -->
+        <div class="flex items-center gap-0 relative">
+          {
+            [
+              { label: "Atleta", color: "#8fd6ff" },
+              { label: "Coach", color: "#70df31" },
+              { label: "Tutor", color: "#fcc554" },
+            ].map((node, i) => (
+              <div class="flex items-center">
+                {i > 0 && (
+                  <div
+                    class="w-12 h-[1px] opacity-40"
+                    style="background: linear-gradient(90deg, #8fd6ff, #70df31);"
+                  />
+                )}
+                <div class="flex flex-col items-center gap-2">
+                  <div
+                    class="w-12 h-12 rounded-full flex items-center justify-center text-xs font-bold"
+                    style={`background: rgba(0,0,0,0.4); border: 1.5px solid ${node.color}; color: ${node.color};`}
+                  >
+                    {node.label.slice(0, 2).toUpperCase()}
+                  </div>
+                  <span class="text-[10px] text-white/40">{node.label}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- Center: PULSO hub -->
+        <div class="text-center space-y-2">
+          <div
+            class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center"
+            style="background: rgba(143,214,255,0.1); border: 1px solid rgba(143,214,255,0.3);"
+          >
+            <span class="material-symbols-outlined text-primary text-3xl"
+              >hub</span
+            >
+          </div>
+          <p class="font-display font-bold text-primary text-sm tracking-widest">
+            PULSO
+          </p>
+          <p class="text-[10px] text-white/30 uppercase tracking-widest">
+            Ecosistema unificado
+          </p>
+        </div>
+
+        <!-- Right: Stats -->
+        <div class="grid grid-cols-2 gap-4 text-center">
+          {
+            [
+              { value: "3 roles", label: "Conectados" },
+              { value: "Real-time", label: "Datos en vivo" },
+              { value: "72hs", label: "Anticipación" },
+              { value: "0 silos", label: "Sin datos aislados" },
+            ].map((stat) => (
+              <div
+                class="rounded-xl p-3"
+                style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);"
+              >
+                <div class="font-display font-bold text-white text-sm">
+                  {stat.value}
+                </div>
+                <div class="text-[10px] text-white/30 mt-1">{stat.label}</div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
