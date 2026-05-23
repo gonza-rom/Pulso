@@ -1,0 +1,277 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Sidebar from "../../../components/demo/Sidebar.astro";
+---
+
+<Layout title="Dashboard Tutor · PULSO" demo="tutor" hideDemoOnMobile>
+  <div class="flex min-h-screen">
+
+    <Sidebar role="tutor" current="dashboard" />
+
+    <!-- HEADER MOBILE -->
+    <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/20 md:hidden">
+      <span class="font-display text-xl font-extrabold tracking-tighter text-orange-400">PULSO</span>
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-outlined text-orange-400">notifications</span>
+        <div class="w-8 h-8 rounded-full bg-orange-400/20 border border-orange-400/30 flex items-center justify-center">
+          <span class="material-symbols-outlined text-orange-400 text-[16px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="md:ml-64 flex-1 pt-20 md:pt-10 pb-28 md:pb-10 px-6 max-w-[1440px]">
+
+      <!-- Header bienvenida -->
+      <header class="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+        <div>
+          <h1 class="font-display text-3xl font-bold text-on-surface">Hola, María 👋</h1>
+          <p class="text-on-surface-variant mt-1 text-sm">Hoy Juan tiene un gran equilibrio. Su recuperación es óptima para el partido de mañana.</p>
+        </div>
+        <div class="glass px-4 py-2 rounded-full flex items-center gap-2 w-fit">
+          <span class="w-2 h-2 bg-secondary rounded-full animate-pulse shadow-[0_0_8px_#70df31]"></span>
+          <span class="text-xs text-secondary font-semibold">Sincronizado: hace 2 min</span>
+        </div>
+      </header>
+
+      <!-- Bento grid -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+        <!-- Columna izquierda -->
+        <section class="md:col-span-4 flex flex-col gap-6">
+
+          <!-- Mis atletas -->
+          <div class="glass rounded-2xl p-6">
+            <h3 class="font-display font-semibold text-orange-400 text-lg mb-5">Mis Atletas</h3>
+            <div class="space-y-3">
+
+              <!-- Atleta activo -->
+              <div class="p-4 bg-orange-400/10 border border-orange-400/30 rounded-xl flex items-center justify-between cursor-pointer hover:bg-orange-400/15 transition-all">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-full bg-orange-400/20 border-2 border-orange-400/50 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-orange-400">person</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-on-surface text-sm">Juan (16)</p>
+                    <p class="text-xs text-secondary font-bold">RECUPERADO</p>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-orange-400">chevron_right</span>
+              </div>
+
+              <!-- Atleta inactivo -->
+              <div class="p-4 glass border-white/5 rounded-xl flex items-center justify-between opacity-50 hover:opacity-80 transition-opacity cursor-pointer">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-on-surface-variant">person</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-on-surface text-sm">Sofía (14)</p>
+                    <p class="text-xs text-on-surface-variant">DESCANSANDO</p>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-on-surface-variant">lock</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Métricas vitales -->
+          <div class="glass rounded-2xl p-6 flex-1">
+            <h3 class="font-display font-semibold text-on-surface text-lg mb-6">Métricas Vitales (Juan)</h3>
+            <div class="space-y-5">
+
+              <div>
+                <div class="flex justify-between items-end mb-2">
+                  <span class="text-xs text-on-surface-variant uppercase tracking-wider">Calidad del Sueño</span>
+                  <span class="font-display font-bold text-primary">8.5h</span>
+                </div>
+                <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                  <div class="bg-primary h-full rounded-full shadow-[0_0_8px_#8fd6ff]" style="width:85%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-end mb-2">
+                  <span class="text-xs text-on-surface-variant uppercase tracking-wider">Nivel de Energía</span>
+                  <span class="font-display font-bold text-secondary">Excelente</span>
+                </div>
+                <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                  <div class="bg-secondary h-full rounded-full shadow-[0_0_8px_#70df31]" style="width:92%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-end mb-2">
+                  <span class="text-xs text-on-surface-variant uppercase tracking-wider">Nutrición</span>
+                  <span class="font-display font-bold text-tertiary">90% Adherencia</span>
+                </div>
+                <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                  <div class="bg-tertiary h-full rounded-full" style="width:90%"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Columna derecha -->
+        <section class="md:col-span-8 flex flex-col gap-6">
+
+          <!-- Balance semanal -->
+          <div class="glass rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-orange-400/5 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex justify-between items-start mb-6 relative">
+              <div>
+                <h3 class="font-display font-semibold text-on-surface text-lg">Balance Semanal: Juan</h3>
+                <p class="text-xs text-on-surface-variant">Distribución de tiempo y carga cognitiva</p>
+              </div>
+              <span class="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded font-bold uppercase tracking-widest">Óptimo</span>
+            </div>
+
+            <!-- Stats 3 col -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+              <div class="glass rounded-xl p-4 text-center border-white/5">
+                <p class="text-xs text-on-surface-variant uppercase mb-1">Deporte</p>
+                <p class="font-display font-bold text-primary text-2xl">12h</p>
+                <p class="text-[10px] text-primary/60 font-medium mt-1">+2h vs sem. pasada</p>
+              </div>
+              <div class="glass rounded-xl p-4 text-center border-white/5">
+                <p class="text-xs text-on-surface-variant uppercase mb-1">Estudio</p>
+                <p class="font-display font-bold text-on-surface text-2xl">18h</p>
+                <p class="text-[10px] text-on-surface-variant/60 font-medium mt-1">Exámenes a la vista</p>
+              </div>
+              <div class="glass rounded-xl p-4 text-center border-white/5">
+                <p class="text-xs text-on-surface-variant uppercase mb-1">Descanso</p>
+                <p class="font-display font-bold text-secondary text-2xl">54h</p>
+                <p class="text-[10px] text-secondary/60 font-medium mt-1">Fase REM profunda</p>
+              </div>
+            </div>
+
+            <!-- Gráfico de barras -->
+            <div class="h-36 w-full bg-white/[0.03] rounded-xl relative flex items-end px-4 pb-4 overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center opacity-[0.04] pointer-events-none select-none">
+                <span class="font-display text-5xl font-black">PULSO DATA</span>
+              </div>
+              <div class="flex-1 flex items-end gap-1.5 h-full pt-4">
+                {[60, 80, 55, 95, 70, 40, 85].map((h, i) => (
+                  <div
+                    class="flex-1 rounded-t transition-colors"
+                    style={`height:${h}%; background: rgba(143,214,255,${0.15 + i * 0.05})`}
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <!-- Agenda + Mensajes -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Agenda sincronizada -->
+            <div class="glass rounded-2xl p-6">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="font-display font-semibold text-on-surface">Agenda Sincronizada</h3>
+                <span class="material-symbols-outlined text-on-surface-variant">calendar_month</span>
+              </div>
+              <div class="space-y-4">
+
+                <div class="flex gap-4 border-l-2 border-primary pl-4 py-1">
+                  <div class="shrink-0 text-center w-10">
+                    <p class="text-[10px] font-bold text-primary uppercase">Mañ</p>
+                    <p class="font-display font-bold text-on-surface">14</p>
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-on-surface">Final Liga Juvenil</p>
+                    <p class="text-xs text-on-surface-variant">Estadio Municipal · 18:30</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-4 border-l-2 border-tertiary pl-4 py-1">
+                  <div class="shrink-0 text-center w-10">
+                    <p class="text-[10px] font-bold text-tertiary uppercase">Mié</p>
+                    <p class="font-display font-bold text-on-surface">16</p>
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-on-surface">Examen Matemáticas</p>
+                    <p class="text-xs text-on-surface-variant">Prep. recomendada: Hoy 19:00</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-4 border-l-2 border-white/10 pl-4 py-1">
+                  <div class="shrink-0 text-center w-10">
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase">Vie</p>
+                    <p class="font-display font-bold text-on-surface">18</p>
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-on-surface">Fisioterapia</p>
+                    <p class="text-xs text-on-surface-variant">Sesión de descarga muscular</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Contacto con coach -->
+            <div class="glass rounded-2xl p-6 flex flex-col">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="font-display font-semibold text-on-surface">Contacto Directo</h3>
+                <span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+              </div>
+
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-primary text-[18px]">person</span>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-on-surface">Coach Ricardo</p>
+                  <p class="text-[10px] text-secondary font-bold uppercase">En línea</p>
+                </div>
+              </div>
+
+              <div class="bg-white/[0.04] rounded-xl p-3 mb-4 italic text-sm text-on-surface-variant border border-white/[0.06]">
+                "Juan está mostrando un gran progreso en la gestión de la fatiga esta semana."
+              </div>
+
+              <div class="mt-auto relative">
+                <input
+                  type="text"
+                  placeholder="Enviar mensaje al coach..."
+                  class="w-full bg-surface-container-lowest border border-white/10 rounded-full py-3 pl-4 pr-12 text-sm text-white placeholder:text-on-surface-variant/40 focus:outline-none focus:border-orange-400/40 focus:ring-1 focus:ring-orange-400/20 transition-all"
+                />
+                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-orange-400 hover:text-orange-300 transition-colors">
+                  <span class="material-symbols-outlined text-[20px]">send</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+    <!-- NAV MOBILE INFERIOR -->
+    <nav class="fixed bottom-0 w-full z-40 flex justify-around items-center px-4 py-3 bg-surface-container-high/80 backdrop-blur-xl border-t border-white/5 rounded-t-2xl md:hidden" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom))">
+      <a class="flex flex-col items-center text-orange-400 scale-110" href="#">
+        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">home</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Inicio</span>
+      </a>
+      <a class="flex flex-col items-center text-outline hover:text-orange-400 transition-all" href="/demo/tutor/alertas">
+        <span class="material-symbols-outlined text-[22px]">notifications</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Alertas</span>
+      </a>
+      <a class="flex flex-col items-center text-outline hover:text-orange-400 transition-all" href="/demo/tutor/mensajes">
+        <span class="material-symbols-outlined text-[22px]">chat</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Mensajes</span>
+      </a>
+      <a class="flex flex-col items-center text-outline hover:text-orange-400 transition-all" href="#">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Perfil</span>
+      </a>
+    </nav>
+
+  </div>
+</Layout>

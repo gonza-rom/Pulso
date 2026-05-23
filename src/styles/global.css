@@ -16,6 +16,12 @@ body {
   @apply bg-background text-white font-body overflow-x-hidden;
 }
 
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 /* Glass card */
 .glass-card {
   background: var(--glass-bg);
@@ -96,6 +102,10 @@ body {
 
 .active .bar-grow {
   transform: scaleX(1);
+}
+
+.neon-glow {
+  box-shadow: 0 0 20px rgba(143, 214, 255, 0.3);
 }
 
 /* Floating animation */

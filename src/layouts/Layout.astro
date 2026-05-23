@@ -1,10 +1,14 @@
 ---
 import "../styles/global.css";
+import DemoBar from "../components/demo/DemoBar.astro";
 
 interface Props {
   title?: string;
+  demo?: "login" | "atleta" | "entrenador" | "tutor";
+  hideDemoOnMobile?: boolean;
 }
-const { title = "PULSO | Elite Athletic Intelligence" } = Astro.props;
+
+const { title = "PULSO | Elite Athletic Intelligence", demo, hideDemoOnMobile = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,48 +29,40 @@ const { title = "PULSO | Elite Athletic Intelligence" } = Astro.props;
     />
   </head>
   <body class="bg-background text-white font-body overflow-x-hidden">
-    <!-- Ambient orbs -->
-    <div
-      class="fixed top-20 -left-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full animate-pulse-slow z-0 pointer-events-none"
-    ></div>
-    <div
-      class="fixed bottom-20 -right-20 w-80 h-80 bg-secondary/10 blur-[120px] rounded-full animate-pulse-slow z-0 pointer-events-none"
-      style="animation-delay: -2s;"
-    ></div>
+
+    <div class="fixed top-20 -left-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full animate-pulse-slow z-0 pointer-events-none"></div>
+    <div class="fixed bottom-20 -right-20 w-80 h-80 bg-secondary/10 blur-[120px] rounded-full animate-pulse-slow z-0 pointer-events-none" style="animation-delay: -2s;"></div>
 
     <slot />
 
+    {demo && (
+      <div class={hideDemoOnMobile ? "hidden md:block" : ""}>
+        <DemoBar current={demo} />
+      </div>
+    )}
+
     <script>
-      // Scroll reveal
       const reveals = document.querySelectorAll(".reveal");
       const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) entry.target.classList.add("active");
-          });
-        },
+        (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("active")),
         { threshold: 0.1 }
       );
       reveals.forEach((el) => observer.observe(el));
 
-      // Glass card mouse tracking
-      document.querySelectorAll(".glass-card").forEach((card) => {
+      document.querySelectorAll(".glass-card, .glass").forEach((card) => {
         const el = card as HTMLElement;
         el.addEventListener("mousemove", (e) => {
           const me = e as MouseEvent;
           const rect = el.getBoundingClientRect();
-          el.style.setProperty(
-            "--mouse-x",
-            `${((me.clientX - rect.left) / rect.width) * 100}%`
-          );
-          el.style.setProperty(
-            "--mouse-y",
-            `${((me.clientY - rect.top) / rect.height) * 100}%`
-          );
+          el.style.setProperty("--mouse-x", `${((me.clientX - rect.left) / rect.width) * 100}%`);
+          el.style.setProperty("--mouse-y", `${((me.clientY - rect.top) / rect.height) * 100}%`);
+        });
+        el.addEventListener("mouseleave", () => {
+          el.style.removeProperty("--mouse-x");
+          el.style.removeProperty("--mouse-y");
         });
       });
-
-
     </script>
+
   </body>
 </html>

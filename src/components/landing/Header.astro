@@ -1,0 +1,303 @@
+---
+const navLinks = [
+  { label: "Perfiles", href: "#perfiles" },
+  { label: "Diferencial", href: "#diferencial" },
+  { label: "Dashboard", href: "#dashboard" },
+];
+
+const demoPanels = [
+  {
+    group: "Atletas",
+    color: "green",
+    items: [
+      { href: "/demo/atleta",                label: "Mi perfil",       icon: "ti-dashboard",      desc: "Progreso y stats" },
+      { href: "/demo/atleta/entrenamientos", label: "Entrenamientos",  icon: "ti-calendar-event", desc: "Sesiones del mes" },
+      { href: "/demo/atleta/logros",         label: "Logros",          icon: "ti-trophy",         desc: "Insignias ganadas" },
+    ],
+  },
+  {
+    group: "Entrenadores",
+    color: "blue",
+    items: [
+      { href: "/demo/entrenador",            label: "Dashboard",       icon: "ti-chart-bar",      desc: "Vista general" },
+      { href: "/demo/entrenador/atletas",    label: "Mis atletas",     icon: "ti-users",          desc: "Gestión de grupo" },
+      { href: "/demo/entrenador/planes",     label: "Planes",          icon: "ti-clipboard-list", desc: "Programas activos" },
+    ],
+  },
+  {
+    group: "Padres & Tutores",
+    color: "orange",
+    items: [
+      { href: "/demo/tutor",                 label: "Seguimiento",     icon: "ti-heart",          desc: "Progreso del hijo/a" },
+      { href: "/demo/tutor/alertas",         label: "Alertas",         icon: "ti-bell",           desc: "Notificaciones" },
+      { href: "/demo/tutor/mensajes",        label: "Mensajes",        icon: "ti-message",        desc: "Chat con el cuerpo técnico" },
+    ],
+  },
+];
+
+const colorMap: Record<string, { icon: string; label: string; item: string; bg: string }> = {
+  green:  { icon: "text-green-400",  label: "text-green-400/55",  item: "text-green-400",  bg: "bg-green-400/10" },
+  blue:   { icon: "text-blue-400",   label: "text-blue-400/55",   item: "text-blue-400",   bg: "bg-blue-400/10" },
+  orange: { icon: "text-orange-400", label: "text-orange-400/55", item: "text-orange-400", bg: "bg-orange-400/10" },
+};
+---
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"
+/>
+
+<header
+  id="main-header"
+  class="fixed top-0 w-full z-50 transition-all duration-500 py-5"
+>
+  <!-- Backdrop (invisible until scroll) -->
+  <div
+    id="header-backdrop"
+    class="absolute inset-0 bg-black/0 backdrop-blur-0 border-b border-transparent transition-all duration-500"
+  ></div>
+
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 relative z-10">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2 group">
+      <div class="relative">
+        <div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+          <span class="material-symbols-outlined text-primary text-lg" style="font-size:18px;">
+            pulse_alert
+          </span>
+        </div>
+      </div>
+      <span class="font-display text-xl font-extrabold tracking-tighter text-white">
+        PULSO
+      </span>
+    </a>
+
+    <!-- Nav -->
+    <nav class="hidden md:flex items-center gap-1">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="relative px-4 py-2 text-xs font-semibold tracking-widest uppercase text-white/40 hover:text-white transition-colors duration-300 group"
+        >
+          {link.label}
+          <span class="absolute bottom-0 left-4 right-4 h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+        </a>
+      ))}
+    </nav>
+
+    <!-- Right actions -->
+    <div class="flex items-center gap-3">
+
+      <!-- Demo dropdown -->
+      <div class="relative hidden md:block" id="demo-dropdown-wrapper">
+        <button
+          id="demo-btn"
+          class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[11px] font-bold tracking-widest uppercase hover:bg-amber-500/15 transition-all duration-150"
+        >
+          <i class="ti ti-eye text-[13px]"></i>
+          Demo
+          <i class="ti ti-chevron-down text-[10px] transition-transform duration-200" id="demo-chevron"></i>
+        </button>
+
+        <!-- Dropdown panel -->
+        <div
+          id="demo-menu"
+          class="hidden absolute right-0 top-full mt-2 w-[560px] rounded-2xl border border-white/[0.08] bg-[#0c0f0e] shadow-2xl shadow-black/60 overflow-hidden"
+        >
+          <!-- Header -->
+          <div class="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="ti ti-eye text-amber-400 text-[13px]"></i>
+              <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider">Modo Demo</span>
+            </div>
+            <span class="text-[11px] text-white/30">Explorá cada interfaz</span>
+          </div>
+
+          <!-- 3-column grid -->
+          <div class="grid grid-cols-3 divide-x divide-white/[0.05]">
+            {demoPanels.map((panel) => {
+              const c = colorMap[panel.color];
+              return (
+                <div class="p-3">
+                  <p class={`text-[9.5px] font-bold uppercase tracking-widest px-2 pb-2 pt-1 ${c.label}`}>
+                    {panel.group}
+                  </p>
+                  <div class="space-y-0.5">
+                    {panel.items.map((item) => (
+                      <a
+                        href={item.href}
+                        class="group/item flex items-center gap-2.5 px-2 py-2 rounded-xl hover:bg-white/[0.04] transition-all duration-150"
+                      >
+                        <div class={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${c.bg} ${c.icon}`}>
+                          <i class={`ti ${item.icon} text-[12px]`}></i>
+                        </div>
+                        <div class="min-w-0">
+                          <p class="text-[12px] font-medium text-white/80 group-hover/item:text-white leading-none mb-0.5">
+                            {item.label}
+                          </p>
+                          <p class="text-[10.5px] text-white/30 truncate">{item.desc}</p>
+                        </div>
+                        <i class="ti ti-arrow-right text-[10px] text-white/20 group-hover/item:text-white/50 ml-auto shrink-0 transition-all"></i>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <!-- Footer -->
+          <div class="px-4 py-2.5 border-t border-white/[0.06] bg-white/[0.02] flex items-center gap-2">
+            <i class="ti ti-info-circle text-white/25 text-[12px]"></i>
+            <p class="text-[10.5px] text-white/25">
+              Modo demo · acceso directo a todas las interfaces del sistema
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ingresar -->
+      <button class="hidden sm:block text-xs font-semibold tracking-widest uppercase text-white/40 hover:text-white transition-colors duration-300 px-2 py-2">
+        Ingresar
+      </button>
+
+      <!-- CTA -->
+      <a
+        href="#perfiles"
+        class="group flex items-center gap-2 bg-primary text-black px-5 py-2.5 rounded-xl text-xs font-bold tracking-widest uppercase hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_24px_rgba(143,214,255,0.25)]"
+      >
+        Empezar gratis
+        <span
+          class="material-symbols-outlined text-black group-hover:translate-x-0.5 transition-transform duration-200"
+          style="font-size:14px;"
+        >
+          arrow_forward
+        </span>
+      </a>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden flex flex-col gap-1.5 p-2"
+        aria-label="Abrir menú"
+      >
+        <span class="w-5 h-[1.5px] bg-white/60 block transition-all duration-300" id="bar1"></span>
+        <span class="w-5 h-[1.5px] bg-white/60 block transition-all duration-300" id="bar2"></span>
+        <span class="w-3 h-[1.5px] bg-white/60 block transition-all duration-300" id="bar3"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-white/5 overflow-hidden max-h-0 transition-all duration-500"
+  >
+    <nav class="flex flex-col px-6 py-4 gap-1">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="mobile-link text-sm font-semibold tracking-widest uppercase text-white/50 hover:text-primary py-3 border-b border-white/5 transition-colors duration-200"
+        >
+          {link.label}
+        </a>
+      ))}
+
+      <!-- Mobile Demo section -->
+      <div class="mt-3 rounded-xl border border-amber-500/20 bg-amber-500/5 overflow-hidden">
+        <div class="px-4 py-2.5 border-b border-amber-500/15 flex items-center gap-2">
+          <i class="ti ti-eye text-amber-400 text-[12px]"></i>
+          <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Modo Demo</span>
+        </div>
+        <div class="p-2 grid grid-cols-2 gap-1">
+          {demoPanels.flatMap((panel) => {
+            const c = colorMap[panel.color];
+            return panel.items.map((item) => (
+              <a
+                href={item.href}
+                class="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-white/[0.05] transition-all"
+              >
+                <i class={`ti ${item.icon} text-[13px] ${c.icon}`}></i>
+                <span class="text-[12px] text-white/70 font-medium">{item.label}</span>
+              </a>
+            ));
+          })}
+        </div>
+      </div>
+
+      <a
+        href="#perfiles"
+        class="mt-4 text-center bg-primary text-black py-3 rounded-xl text-xs font-bold tracking-widest uppercase"
+      >
+        Empezar gratis
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Scroll backdrop
+  const backdrop = document.getElementById("header-backdrop");
+  window.addEventListener("scroll", () => {
+    if (!backdrop) return;
+    if (window.scrollY > 40) {
+      backdrop.classList.add("bg-black/80", "backdrop-blur-xl", "border-white/5");
+      backdrop.classList.remove("bg-black/0", "backdrop-blur-0", "border-transparent");
+    } else {
+      backdrop.classList.remove("bg-black/80", "backdrop-blur-xl", "border-white/5");
+      backdrop.classList.add("bg-black/0", "backdrop-blur-0", "border-transparent");
+    }
+  });
+
+  // Demo dropdown
+  const demoBtn = document.getElementById("demo-btn");
+  const demoMenu = document.getElementById("demo-menu");
+  const demoChevron = document.getElementById("demo-chevron");
+  let demoOpen = false;
+
+  demoBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    demoOpen = !demoOpen;
+    demoMenu?.classList.toggle("hidden", !demoOpen);
+    if (demoChevron) {
+      demoChevron.style.transform = demoOpen ? "rotate(180deg)" : "rotate(0deg)";
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    const wrapper = document.getElementById("demo-dropdown-wrapper");
+    if (wrapper && !wrapper.contains(e.target as Node)) {
+      demoOpen = false;
+      demoMenu?.classList.add("hidden");
+      if (demoChevron) demoChevron.style.transform = "rotate(0deg)";
+    }
+  });
+
+  // Mobile menu
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  const bar1 = document.getElementById("bar1");
+  const bar2 = document.getElementById("bar2");
+  const bar3 = document.getElementById("bar3");
+  let open = false;
+
+  btn?.addEventListener("click", () => {
+    open = !open;
+    if (menu) menu.style.maxHeight = open ? menu.scrollHeight + "px" : "0px";
+    if (bar1) bar1.style.transform = open ? "rotate(45deg) translate(4px, 4px)" : "";
+    if (bar2) bar2.style.opacity = open ? "0" : "1";
+    if (bar3) bar3.style.transform = open ? "rotate(-45deg) translate(4px, -4px)" : "";
+    if (bar3) bar3.style.width = open ? "20px" : "12px";
+  });
+
+  document.querySelectorAll(".mobile-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      open = false;
+      if (menu) menu.style.maxHeight = "0px";
+      if (bar1) bar1.style.transform = "";
+      if (bar2) (bar2 as HTMLElement).style.opacity = "1";
+      if (bar3) { bar3.style.transform = ""; bar3.style.width = "12px"; }
+    });
+  });
+</script>

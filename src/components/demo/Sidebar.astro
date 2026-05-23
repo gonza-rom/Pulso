@@ -1,0 +1,111 @@
+---
+// components/demo/Sidebar.astro
+
+export interface Props {
+  role: "atleta" | "entrenador" | "tutor";
+  current?: string; // página activa
+}
+
+const { role, current = "dashboard" } = Astro.props;
+
+const config = {
+  atleta: {
+    label: "Atleta",
+    color: "text-primary",
+    accent: "bg-primary/10 border-r-2 border-primary text-primary",
+    cta: { label: "Iniciar Entrenamiento", icon: "add" },
+    nav: [
+      { id: "dashboard",       label: "Dashboard",       icon: "grid_view",      href: "/demo/atleta" },
+      { id: "entrenamientos",  label: "Entrenamientos",  icon: "fitness_center", href: "/demo/atleta/entrenamientos" },
+      { id: "agenda",          label: "Agenda",          icon: "calendar_month", href: "/demo/atleta/agenda" },
+      { id: "alertas",         label: "Alertas",         icon: "warning",        href: "#", badge: true },
+      { id: "perfil",          label: "Mi Perfil",       icon: "person",         href: "#" },
+    ],
+  },
+  entrenador: {
+    label: "Entrenador",
+    color: "text-blue-400",
+    accent: "bg-blue-400/10 border-r-2 border-blue-400 text-blue-400",
+    cta: { label: "Nueva Sesión", icon: "add" },
+    nav: [
+      { id: "dashboard",  label: "Dashboard",   icon: "grid_view",        href: "/demo/entrenador" },
+      { id: "atletas",    label: "Mis Atletas", icon: "group",            href: "/demo/entrenador/atletas" },
+      { id: "planes",     label: "Planes",      icon: "clipboard_list",   href: "/demo/entrenador/planes" },
+      { id: "alertas",    label: "Alertas",     icon: "warning",          href: "#", badge: true },
+      { id: "perfil",     label: "Mi Perfil",   icon: "person",           href: "#" },
+    ],
+  },
+  tutor: {
+    label: "Padre / Tutor",
+    color: "text-orange-400",
+    accent: "bg-orange-400/10 border-r-2 border-orange-400 text-orange-400",
+    cta: { label: "Ver Reporte", icon: "summarize" },
+    nav: [
+      { id: "dashboard",  label: "Seguimiento", icon: "grid_view",   href: "/demo/tutor" },
+      { id: "alertas",    label: "Alertas",     icon: "notifications", href: "/demo/tutor/alertas", badge: true },
+      { id: "mensajes",   label: "Mensajes",    icon: "chat",        href: "/demo/tutor/mensajes" },
+      { id: "perfil",     label: "Mi Perfil",   icon: "person",      href: "#" },
+    ],
+  },
+};
+
+const { label, color, accent, cta, nav } = config[role];
+---
+
+<aside class="hidden md:flex flex-col h-screen fixed left-0 top-0 py-8 w-64 bg-surface-container-lowest border-r border-outline-variant/10 backdrop-blur-2xl z-40">
+
+  <!-- Logo + rol -->
+  <div class="px-6 mb-10">
+    <a href="/" class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary" style="font-size:18px;">pulse_alert</span>
+      </div>
+      <span class="font-display text-xl font-extrabold tracking-tighter text-white">PULSO</span>
+    </a>
+    <p class={`text-xs mt-1 opacity-70 uppercase tracking-widest ${color}`}>{label}</p>
+  </div>
+
+  <!-- Nav -->
+  <nav class="flex-1 flex flex-col gap-0.5 px-3">
+    {nav.map((item) => (
+      <a
+        href={item.href}
+        class={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all relative
+          ${current === item.id
+            ? accent
+            : "text-on-surface-variant hover:bg-white/5 hover:text-primary"
+          }`}
+      >
+        <span
+          class="material-symbols-outlined text-[20px]"
+          style={current === item.id ? "font-variation-settings:'FILL' 1;" : ""}
+        >
+          {item.icon}
+        </span>
+        {item.label}
+        {item.badge && (
+          <span class="absolute right-3 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+        )}
+      </a>
+    ))}
+  </nav>
+
+  <!-- CTA + footer -->
+  <div class="px-4 mt-auto space-y-3">
+    <button class="w-full bg-gradient-to-r from-primary-container to-primary text-on-primary py-3 rounded-xl text-sm font-bold neon-glow hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">{cta.icon}</span>
+      {cta.label}
+    </button>
+    <div class="border-t border-outline-variant/10 pt-3 space-y-0.5">
+      <a class="flex items-center gap-2 px-3 py-2 text-on-surface-variant text-xs hover:text-primary transition-colors" href="#">
+        <span class="material-symbols-outlined text-[16px]">settings</span>
+        Configuración
+      </a>
+      <a class="flex items-center gap-2 px-3 py-2 text-on-surface-variant text-xs hover:text-primary transition-colors" href="#">
+        <span class="material-symbols-outlined text-[16px]">help</span>
+        Soporte
+      </a>
+    </div>
+  </div>
+
+</aside>

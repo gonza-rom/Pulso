@@ -1,0 +1,200 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Iniciar sesión · PULSO" demo="login">
+
+  <main class="min-h-screen flex items-center justify-center px-4 py-24 relative">
+
+    <!-- Orbe extra centrado -->
+    <div class="absolute inset-0 hero-gradient pointer-events-none"></div>
+
+    <div class="w-full max-w-md relative z-10">
+
+      <!-- Logo -->
+      <div class="text-center mb-10">
+        <a href="/" class="inline-flex items-center gap-3 group">
+          <div
+            class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300"
+          >
+            <span class="material-symbols-outlined text-primary" style="font-size:20px;">pulse_alert</span>
+          </div>
+          <span class="font-display text-2xl font-extrabold tracking-tighter text-white">PULSO</span>
+        </a>
+        <p class="mt-3 text-white/40 text-sm">Accedé a tu panel de rendimiento</p>
+      </div>
+
+      <!-- Card -->
+      <div class="glass-card p-8">
+
+        <!-- Selector de perfil -->
+        <p class="text-[10px] font-semibold text-white/30 uppercase tracking-widest mb-3">Entrás como</p>
+        <div class="grid grid-cols-3 gap-2 mb-6" id="profile-selector">
+
+          <button
+            data-profile="atleta"
+            data-href="/demo/atleta"
+            class="profile-btn group flex flex-col items-center gap-2 px-3 py-3.5 rounded-xl border border-white/[0.08] text-white/40 text-[11px] font-semibold uppercase tracking-wider transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[22px] transition-colors">sprint</span>
+            Atleta
+          </button>
+
+          <button
+            data-profile="entrenador"
+            data-href="/demo/entrenador"
+            class="profile-btn group flex flex-col items-center gap-2 px-3 py-3.5 rounded-xl border border-white/[0.08] text-white/40 text-[11px] font-semibold uppercase tracking-wider transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[22px] transition-colors">sports</span>
+            Entrenador
+          </button>
+
+          <button
+            data-profile="tutor"
+            data-href="/demo/tutor"
+            class="profile-btn group flex flex-col items-center gap-2 px-3 py-3.5 rounded-xl border border-white/[0.08] text-white/40 text-[11px] font-semibold uppercase tracking-wider transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[22px] transition-colors">family_restroom</span>
+            Tutor
+          </button>
+
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label class="block text-xs text-white/40 mb-1.5 font-medium">Correo electrónico</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">mail</span>
+            <input
+              type="email"
+              value="juan@pulso.app"
+              class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all"
+            />
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-5">
+          <label class="block text-xs text-white/40 mb-1.5 font-medium">Contraseña</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">lock</span>
+            <input
+              type="password"
+              value="pulso2024"
+              class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-10 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all"
+            />
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/60 transition-colors">
+              <span class="material-symbols-outlined text-[18px]">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Recordarme -->
+        <div class="flex items-center justify-between mb-6">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked
+              class="w-4 h-4 rounded border-white/20 bg-white/[0.04] text-primary focus:ring-primary/20 focus:ring-offset-0"
+            />
+            <span class="text-xs text-white/40">Recordarme</span>
+          </label>
+          <a href="#" class="text-xs text-primary hover:text-primary/80 transition-colors">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Botón ingresar -->
+        <button
+          id="login-btn"
+          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-black font-bold text-sm neon-glow hover:scale-[1.01] active:scale-[0.99] transition-all duration-150"
+        >
+          <span class="material-symbols-outlined text-[18px]">login</span>
+          Ingresar
+        </button>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-3 my-6">
+          <div class="flex-1 h-px bg-white/[0.06]"></div>
+          <span class="text-[10px] text-white/20 uppercase tracking-wider">acceso demo rápido</span>
+          <div class="flex-1 h-px bg-white/[0.06]"></div>
+        </div>
+
+        <!-- Accesos directos -->
+        <div class="space-y-2">
+          <a
+            href="/demo/atleta"
+            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border border-green-400/20 bg-green-400/[0.04] text-green-400 text-sm font-medium hover:bg-green-400/[0.08] transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[18px]">sprint</span>
+            <span class="flex-1">Ver como Atleta</span>
+            <span class="material-symbols-outlined text-[14px] opacity-40">arrow_forward</span>
+          </a>
+          <a
+            href="/demo/entrenador"
+            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border border-blue-400/20 bg-blue-400/[0.04] text-blue-400 text-sm font-medium hover:bg-blue-400/[0.08] transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[18px]">sports</span>
+            <span class="flex-1">Ver como Entrenador</span>
+            <span class="material-symbols-outlined text-[14px] opacity-40">arrow_forward</span>
+          </a>
+          <a
+            href="/demo/tutor"
+            class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border border-orange-400/20 bg-orange-400/[0.04] text-orange-400 text-sm font-medium hover:bg-orange-400/[0.08] transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[18px]">family_restroom</span>
+            <span class="flex-1">Ver como Padre/Tutor</span>
+            <span class="material-symbols-outlined text-[14px] opacity-40">arrow_forward</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Pie -->
+      <p class="text-center text-[11px] text-white/20 mt-6">
+        ¿No tenés cuenta?
+        <a href="#" class="text-primary hover:underline ml-1">Registrate gratis</a>
+      </p>
+
+    </div>
+  </main>
+
+</DemoLayout>
+
+<script>
+  type ProfileId = "atleta" | "entrenador" | "tutor";
+
+  const colorMap: Record<ProfileId, { border: string; text: string; bg: string }> = {
+    atleta:     { border: "border-primary/40",       text: "text-primary",      bg: "bg-primary/10" },
+    entrenador: { border: "border-blue-400/40",      text: "text-blue-400",     bg: "bg-blue-400/10" },
+    tutor:      { border: "border-orange-400/40",    text: "text-orange-400",   bg: "bg-orange-400/10" },
+  };
+
+  let selectedHref = "/demo/atleta";
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".profile-btn");
+
+  function activate(btn: HTMLButtonElement) {
+    const profile = btn.dataset.profile as ProfileId;
+    selectedHref = btn.dataset.href!;
+    const c = colorMap[profile];
+
+    buttons.forEach((b) => {
+      const p = b.dataset.profile as ProfileId;
+      const bc = colorMap[p];
+      b.classList.remove(bc.border, bc.text, bc.bg);
+      b.classList.add("border-white/[0.08]", "text-white/40");
+    });
+
+    btn.classList.remove("border-white/[0.08]", "text-white/40");
+    btn.classList.add(c.border, c.text, c.bg);
+  }
+
+  // Activar atleta por defecto
+  const defaultBtn = document.querySelector<HTMLButtonElement>('[data-profile="atleta"]');
+  if (defaultBtn) activate(defaultBtn);
+
+  buttons.forEach((btn) => btn.addEventListener("click", () => activate(btn)));
+
+  document.getElementById("login-btn")?.addEventListener("click", () => {
+    window.location.href = selectedHref;
+  });
+</script>
