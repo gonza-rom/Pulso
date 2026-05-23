@@ -1,53 +1,153 @@
 ---
 const navLinks = [
-  { label: "Performance", href: "#", active: true },
-  { label: "Intelligence", href: "#" },
-  { label: "Coaching", href: "#" },
-  { label: "Pricing", href: "#" },
+  { label: "Perfiles", href: "#perfiles" },
+  { label: "Diferencial", href: "#diferencial" },
+  { label: "Dashboard", href: "#dashboard" },
+  { label: "Precios", href: "#precios" },
 ];
 ---
 
 <header
-  class="sticky top-0 w-full z-50 bg-black/10 backdrop-blur-xl border-b border-white/5 shadow-[0_0_20px_rgba(143,214,255,0.1)] transition-all duration-300 py-4"
+  id="main-header"
+  class="fixed top-0 w-full z-50 transition-all duration-500 py-5"
 >
+  <!-- Backdrop (invisible until scroll) -->
   <div
-    class="max-w-7xl mx-auto flex items-center justify-between px-6"
-  >
-    <div
-      class="font-display text-2xl font-extrabold tracking-tighter text-primary flex items-center gap-2"
-    >
-      PULSO
-      <span class="material-symbols-outlined text-primary">pulse_alert</span>
-    </div>
+    id="header-backdrop"
+    class="absolute inset-0 bg-black/0 backdrop-blur-0 border-b border-transparent transition-all duration-500"
+  ></div>
 
-    <nav class="hidden md:flex items-center gap-8">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 relative z-10">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2 group">
+      <div class="relative">
+        <div
+          class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300"
+        >
+          <span class="material-symbols-outlined text-primary text-lg" style="font-size:18px;">
+            pulse_alert
+          </span>
+        </div>
+      </div>
+      <span class="font-display text-xl font-extrabold tracking-tighter text-white">
+        PULSO
+      </span>
+    </a>
+
+    <!-- Nav: secciones reales de la landing -->
+    <nav class="hidden md:flex items-center gap-1">
       {
         navLinks.map((link) => (
           <a
             href={link.href}
-            class={
-              link.active
-                ? "text-xs font-semibold tracking-widest uppercase text-primary border-b-2 border-primary pb-1"
-                : "text-xs font-semibold tracking-widest uppercase text-white/50 hover:text-white transition-colors duration-300"
-            }
+            class="relative px-4 py-2 text-xs font-semibold tracking-widest uppercase text-white/40 hover:text-white transition-colors duration-300 group"
           >
             {link.label}
+            <span class="absolute bottom-0 left-4 right-4 h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           </a>
         ))
       }
     </nav>
 
-    <div class="flex items-center gap-6">
+    <!-- CTA -->
+    <div class="flex items-center gap-3">
       <button
-        class="hidden sm:block text-xs font-semibold tracking-widest uppercase text-white hover:text-primary transition-all duration-300"
+        class="hidden sm:block text-xs font-semibold tracking-widest uppercase text-white/40 hover:text-white transition-colors duration-300 px-2 py-2"
       >
-        Login
+        Ingresar
       </button>
-      <button
-        class="bg-primary text-black px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(143,214,255,0.2)]"
+      <a
+        href="#perfiles"
+        class="group flex items-center gap-2 bg-primary text-black px-5 py-2.5 rounded-xl text-xs font-bold tracking-widest uppercase hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_24px_rgba(143,214,255,0.25)]"
       >
-        Start Training
+        Empezar gratis
+        <span
+          class="material-symbols-outlined text-black group-hover:translate-x-0.5 transition-transform duration-200"
+          style="font-size:14px;"
+        >
+          arrow_forward
+        </span>
+      </a>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden flex flex-col gap-1.5 p-2"
+        aria-label="Abrir menú"
+      >
+        <span class="w-5 h-[1.5px] bg-white/60 block transition-all duration-300" id="bar1"></span>
+        <span class="w-5 h-[1.5px] bg-white/60 block transition-all duration-300" id="bar2"></span>
+        <span class="w-3 h-[1.5px] bg-white/60 block transition-all duration-300" id="bar3"></span>
       </button>
     </div>
   </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-white/5 overflow-hidden max-h-0 transition-all duration-500"
+  >
+    <nav class="flex flex-col px-6 py-4 gap-1">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="mobile-link text-sm font-semibold tracking-widest uppercase text-white/50 hover:text-primary py-3 border-b border-white/5 transition-colors duration-200"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href="#perfiles"
+        class="mt-4 text-center bg-primary text-black py-3 rounded-xl text-xs font-bold tracking-widest uppercase"
+      >
+        Empezar gratis
+      </a>
+    </nav>
+  </div>
 </header>
+
+<script>
+  const header = document.getElementById("main-header");
+  const backdrop = document.getElementById("header-backdrop");
+
+  window.addEventListener("scroll", () => {
+    if (!backdrop) return;
+    if (window.scrollY > 40) {
+      backdrop.classList.add("bg-black/80", "backdrop-blur-xl", "border-white/5");
+      backdrop.classList.remove("bg-black/0", "backdrop-blur-0", "border-transparent");
+    } else {
+      backdrop.classList.remove("bg-black/80", "backdrop-blur-xl", "border-white/5");
+      backdrop.classList.add("bg-black/0", "backdrop-blur-0", "border-transparent");
+    }
+  });
+
+  // Mobile menu toggle
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  const bar1 = document.getElementById("bar1");
+  const bar2 = document.getElementById("bar2");
+  const bar3 = document.getElementById("bar3");
+  let open = false;
+
+  btn?.addEventListener("click", () => {
+    open = !open;
+    if (menu) menu.style.maxHeight = open ? menu.scrollHeight + "px" : "0px";
+    if (bar1) bar1.style.transform = open ? "rotate(45deg) translate(4px, 4px)" : "";
+    if (bar2) bar2.style.opacity = open ? "0" : "1";
+    if (bar3) bar3.style.transform = open ? "rotate(-45deg) translate(4px, -4px)" : "";
+    if (bar3) bar3.style.width = open ? "20px" : "12px";
+  });
+
+  // Close on link click
+  document.querySelectorAll(".mobile-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      open = false;
+      if (menu) menu.style.maxHeight = "0px";
+      if (bar1) bar1.style.transform = "";
+      if (bar2) (bar2 as HTMLElement).style.opacity = "1";
+      if (bar3) { bar3.style.transform = ""; bar3.style.width = "12px"; }
+    });
+  });
+</script>
