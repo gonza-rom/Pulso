@@ -20,8 +20,7 @@ const config = {
       { id: "agenda",         label: "Agenda",         icon: "calendar_month", href: "/demo/atleta/agenda" },
       { id: "ranking",        label: "Ranking",        icon: "leaderboard",            href: "/demo/atleta/ranking" },
       { id: "rachas",         label: "Rachas",         icon: "local_fire_department",  href: "/demo/atleta/rachas", streak: 7 },
-      { id: "alertas",        label: "Alertas",        icon: "warning",                href: "#", badge: true },
-      { id: "perfil",         label: "Mi Perfil",      icon: "person",                 href: "#" },
+      { id: "perfil",         label: "Mi Perfil",      icon: "person",                 href: "/demo/atleta/perfil" },
     ],
   },
   entrenador: {
@@ -89,11 +88,6 @@ const { label, color, accent, cta, nav } = config[role];
         </span>
 
         {item.label}
-
-        <!-- Badge error (alertas) -->
-        {item.badge && (
-          <span class="absolute right-3 w-2 h-2 bg-error rounded-full animate-pulse"></span>
-        )}
 
         <!-- Badge racha (fuego + número) -->
         {(item as any).streak && (

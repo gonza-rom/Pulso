@@ -1,272 +1,707 @@
 ---
+import Layout from "../../../layouts/Layout.astro";
 import Sidebar from "../../../components/demo/Sidebar.astro";
-import DemoLayout from "../../../layouts/Layout.astro";
-
-const days = [
-  { short: "Lun", num: 14, today: false },
-  { short: "Mar", num: 15, today: true },
-  { short: "Mié", num: 16, today: false },
-  { short: "Jue", num: 17, today: false },
-  { short: "Vie", num: 18, today: false },
-  { short: "Sáb", num: 19, today: false },
-  { short: "Dom", num: 20, today: false },
-];
-
-const hours = ["07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
 ---
 
-<DemoLayout title="Agenda · Atleta" demo="atleta" hideDemoOnMobile>
+<Layout title="Agenda · Atleta · PULSO" demo="atleta" hideDemoOnMobile>
+<div class="flex min-h-screen">
 
-  <div class="flex min-h-screen">
-    <Sidebar role="atleta" current="agenda" />
-    <!-- Header mobile -->
-    <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/20 md:hidden">
-      <span class="font-display text-xl font-extrabold tracking-tighter text-primary">PULSO</span>
-      <div class="flex items-center gap-4">
-        <span class="material-symbols-outlined text-primary">notifications</span>
-        <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary text-[16px]">person</span>
+  <Sidebar role="atleta" current="agenda" />
+
+  <!-- Header mobile -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/20 md:hidden">
+    <span class="font-display text-xl font-extrabold tracking-tighter text-primary">PULSO</span>
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary">notifications</span>
+      <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-[16px]">person</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="md:ml-64 flex-1 pt-20 md:pt-8 pb-28 md:pb-10 px-4 md:px-8">
+
+    <!-- ── HEADER ── -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+      <div>
+        <h1 class="font-display text-2xl md:text-3xl font-bold text-on-surface">Mi Agenda</h1>
+        <p class="text-on-surface-variant text-sm mt-0.5" id="week-label">Semana del 12 al 18 de Mayo</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center rounded-xl overflow-hidden" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+          <button id="prev-week" class="p-2.5 text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+          </button>
+          <button id="today-btn" class="px-3 py-2 text-xs font-bold text-on-surface hover:text-primary transition-colors" style="border-left:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05)">Hoy</button>
+          <button id="next-week" class="p-2.5 text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+          </button>
+        </div>
+        <div class="flex p-1 rounded-xl gap-1" id="view-switcher" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+          <button data-view="day"   class="view-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all">Día</button>
+          <button data-view="week"  class="view-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all">Semana</button>
+          <button data-view="month" class="view-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all">Mes</button>
+          <button data-view="list"  class="view-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all">Lista</button>
+        </div>
+        <button class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all" style="background:#8fd6ff;color:#003549;box-shadow:0 0 20px rgba(143,214,255,0.3)">
+          <span class="material-symbols-outlined text-[16px]">add</span>
+          <span class="hidden sm:inline">Nuevo evento</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── VISTA SEMANA ── -->
+    <div id="view-week" class="view-panel hidden">
+      <div class="cal-shell rounded-2xl overflow-hidden mb-4">
+        <!-- Cabecera fija -->
+        <div class="flex border-b" style="border-color:rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">
+          <!-- Esquina hora -->
+          <div class="hour-col border-r flex items-end justify-end pb-2 pr-2" style="border-color:rgba(255,255,255,0.06)">
+            <span style="font-size:9px;color:#87929b;font-weight:700;text-transform:uppercase">hora</span>
+          </div>
+          <!-- Días -->
+          <div class="flex flex-1" id="week-day-headers"></div>
+        </div>
+        <!-- Cuerpo scrolleable -->
+        <div class="overflow-y-auto" style="max-height:520px;scrollbar-width:none" id="week-scroll">
+          <div class="flex relative" id="week-body-row">
+            <!-- Horas -->
+            <div class="hour-col border-r shrink-0" style="border-color:rgba(255,255,255,0.06)" id="week-hours"></div>
+            <!-- Grid días + eventos -->
+            <div class="flex-1 relative" id="week-day-grid">
+              <!-- líneas horizontales -->
+              <div class="absolute inset-0 pointer-events-none" id="week-hlines"></div>
+              <!-- líneas verticales -->
+              <div class="absolute inset-0 flex pointer-events-none" id="week-vlines"></div>
+              <!-- indicador hora actual -->
+              <div id="week-now" class="absolute left-0 right-0 flex items-center z-20 pointer-events-none" style="display:none!important">
+                <div style="width:10px;height:10px;border-radius:50%;background:#ff6b6b;border:2px solid #050505;box-shadow:0 0 8px rgba(255,107,107,0.7);flex-shrink:0"></div>
+                <div style="flex:1;height:1.5px;background:rgba(255,107,107,0.5)"></div>
+              </div>
+              <!-- eventos -->
+              <div class="absolute inset-0 pointer-events-none" id="week-events"></div>
+            </div>
+          </div>
         </div>
       </div>
-    </header>
 
-    <!-- Contenido principal -->
-    <main class="md:ml-64 flex-1 pt-20 md:pt-10 pb-28 md:pb-20 px-6">
-
-      <!-- Header de la agenda -->
-      <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-        <div>
-          <h2 class="font-display text-3xl font-bold text-on-surface">Mi Agenda</h2>
-          <p class="text-on-surface-variant text-sm mt-1">Semana del 14 al 20 de Mayo, 2024</p>
-        </div>
-        <div class="flex items-center gap-3">
-          <div class="glass flex p-1 rounded-xl">
-            <button class="p-2 hover:bg-white/5 rounded-lg transition-colors text-on-surface-variant">
-              <span class="material-symbols-outlined text-[18px]">chevron_left</span>
-            </button>
-            <button class="px-4 py-1.5 hover:bg-white/5 rounded-lg transition-colors text-sm text-on-surface font-medium">Hoy</button>
-            <button class="p-2 hover:bg-white/5 rounded-lg transition-colors text-on-surface-variant">
-              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
-            </button>
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="stat-card rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(112,223,49,0.1)">
+            <span class="material-symbols-outlined text-[18px]" style="color:#70df31">fitness_center</span>
           </div>
-          <div class="glass flex items-center gap-2 px-3 py-2 rounded-xl">
-            <span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
-            <span class="text-sm text-on-surface">Vista Semanal</span>
-            <span class="material-symbols-outlined text-on-surface-variant text-[16px]">keyboard_arrow_down</span>
+          <div>
+            <p class="text-[10px] uppercase tracking-wider" style="color:#bcc8d1">Entrenamientos</p>
+            <p class="font-display font-bold text-lg" style="color:#e0e2ea">4 <span style="font-size:12px;color:#bcc8d1;font-weight:400">esta sem.</span></p>
           </div>
         </div>
-      </header>
-
-      <!-- Vista MOBILE: tarjetas de eventos -->
-      <div class="md:hidden space-y-3 mb-8">
-        {days.map(d => (
-          <div class={`glass rounded-2xl overflow-hidden ${d.today ? "border border-primary/30" : ""}`}>
-            <div class={`px-4 py-2.5 flex items-center justify-between border-b border-white/5 ${d.today ? "bg-primary/5" : ""}`}>
-              <span class={`text-xs font-bold uppercase tracking-wider ${d.today ? "text-primary" : "text-on-surface-variant"}`}>
-                {d.today ? "Hoy · " : ""}{d.short} {d.num}
-              </span>
-              {d.today && <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>}
-            </div>
-            {d.num === 15 && (
-              <div class="p-3">
-                <div class="bg-secondary/10 border-l-4 border-secondary rounded-xl p-3">
-                  <span class="text-[10px] font-bold text-secondary uppercase tracking-wider">Entrenamiento</span>
-                  <p class="text-sm font-semibold text-on-surface mt-0.5">Sesión HIIT Elite</p>
-                  <div class="flex items-center gap-1 mt-1 text-outline text-[10px]">
-                    <span class="material-symbols-outlined text-[12px]">schedule</span>
-                    09:30 – 11:00
-                  </div>
-                </div>
-              </div>
-            )}
-            {d.num === 14 && (
-              <div class="p-3">
-                <div class="bg-primary-container/10 border-l-4 border-primary-container rounded-xl p-3">
-                  <span class="text-[10px] font-bold text-primary-container uppercase tracking-wider">Estudio</span>
-                  <p class="text-sm font-semibold text-on-surface mt-0.5">Clase de Anatomía</p>
-                  <div class="flex items-center gap-1 mt-1 text-outline text-[10px]">
-                    <span class="material-symbols-outlined text-[12px]">schedule</span>
-                    08:00 – 10:00
-                  </div>
-                </div>
-              </div>
-            )}
-            {d.num === 18 && (
-              <div class="p-3">
-                <div class="bg-primary-container/10 border-l-4 border-primary-container rounded-xl p-3">
-                  <span class="text-[10px] font-bold text-primary-container uppercase tracking-wider">Estudio</span>
-                  <p class="text-sm font-semibold text-on-surface mt-0.5">Examen Fisiología</p>
-                  <div class="flex items-center gap-1 mt-1 text-outline text-[10px]">
-                    <span class="material-symbols-outlined text-[12px]">schedule</span>
-                    08:00 – 12:00
-                  </div>
-                </div>
-              </div>
-            )}
-            {![14,15,18].includes(d.num) && (
-              <div class="px-4 py-3">
-                <p class="text-xs text-outline">Sin eventos</p>
-              </div>
-            )}
+        <div class="stat-card rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(143,214,255,0.1)">
+            <span class="material-symbols-outlined text-[18px]" style="color:#8fd6ff">schedule</span>
           </div>
-        ))}
+          <div>
+            <p class="text-[10px] uppercase tracking-wider" style="color:#bcc8d1">Horas totales</p>
+            <p class="font-display font-bold text-lg" style="color:#e0e2ea">14h <span style="font-size:12px;color:#70df31;font-weight:400">+2 vs ant.</span></p>
+          </div>
+        </div>
+        <div class="stat-card rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(252,197,84,0.1)">
+            <span class="material-symbols-outlined text-[18px]" style="color:#fcc554">check_circle</span>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-wider" style="color:#bcc8d1">Cumplimiento</p>
+            <p class="font-display font-bold text-lg" style="color:#e0e2ea">94%</p>
+          </div>
+        </div>
+        <div class="stat-card rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(255,107,107,0.1)">
+            <span class="material-symbols-outlined text-[18px]" style="color:#ffb4ab">sprint</span>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-wider" style="color:#bcc8d1">Próximo</p>
+            <p class="font-display font-bold text-sm leading-tight" style="color:#e0e2ea">HIIT · 09:30</p>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <!-- Vista DESKTOP: grid calendario -->
-      <div class="hidden md:block glass rounded-2xl overflow-hidden mb-6">
-        <!-- Cabecera días -->
-        <div class="grid grid-cols-8 border-b border-outline-variant/10 bg-white/[0.03]">
-          <div class="p-4 border-r border-outline-variant/10"></div>
-          {days.map(d => (
-            <div class={`p-4 border-r last:border-0 border-outline-variant/10 text-center ${d.today ? "bg-primary/5" : ""}`}>
-              <span class={`block text-[10px] font-bold uppercase tracking-wider ${d.today ? "text-primary" : "text-on-surface-variant"}`}>{d.short}</span>
-              <span class={`text-xl font-display font-bold mt-0.5 ${d.today ? "text-primary" : "text-on-surface"}`}>{d.num}</span>
+    <!-- ── VISTA DÍA ── -->
+    <div id="view-day" class="view-panel hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <!-- Timeline -->
+        <div class="md:col-span-2 cal-shell rounded-2xl overflow-hidden">
+          <!-- Cabecera día -->
+          <div class="px-5 py-4 flex items-center justify-between border-b" style="border-color:rgba(255,255,255,0.06)">
+            <div class="flex items-center gap-3">
+              <button id="day-prev" class="p-1.5 rounded-lg hover:bg-white/5 transition-colors text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+              </button>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider" style="color:#bcc8d1" id="day-name-label">Martes</p>
+                <p class="font-display text-xl font-bold" style="color:#8fd6ff" id="day-date-label">13 de Mayo</p>
+              </div>
+              <button id="day-next" class="p-1.5 rounded-lg hover:bg-white/5 transition-colors text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
             </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full animate-pulse" style="background:#70df31"></span>
+              <span class="text-xs font-semibold" style="color:#70df31" id="day-event-count">2 eventos</span>
+            </div>
+          </div>
+
+          <!-- Timeline scrolleable -->
+          <div class="overflow-y-auto" style="max-height:560px;scrollbar-width:none">
+            <div class="flex relative" id="day-grid">
+              <!-- Columna horas -->
+              <div class="shrink-0 border-r" style="width:56px;border-color:rgba(255,255,255,0.06)" id="day-hours"></div>
+              <!-- Columna eventos -->
+              <div class="flex-1 relative" id="day-events-col">
+                <!-- líneas horizontales -->
+                <div class="absolute inset-0 pointer-events-none" id="day-hlines"></div>
+                <!-- indicador hora actual -->
+                <div id="day-now" class="absolute left-0 right-0 flex items-center z-20 pointer-events-none" style="display:none!important">
+                  <div style="width:10px;height:10px;border-radius:50%;background:#ff6b6b;border:2px solid #050505;box-shadow:0 0 8px rgba(255,107,107,0.7);flex-shrink:0;margin-left:-5px"></div>
+                  <div style="flex:1;height:1.5px;background:rgba(255,107,107,0.5)"></div>
+                </div>
+                <!-- eventos -->
+                <div class="absolute inset-0 pointer-events-none" id="day-events"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel lateral -->
+        <div class="space-y-4">
+          <div class="stat-card rounded-2xl p-5">
+            <h4 class="text-xs font-bold uppercase tracking-widest mb-4" style="color:#bcc8d1;opacity:.7">Energía del día</h4>
+            <div class="space-y-3">
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span style="color:#bcc8d1">Mañana</span><span class="font-semibold" style="color:#e0e2ea">85%</span>
+                </div>
+                <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.06)">
+                  <div class="h-full rounded-full" style="width:85%;background:#8fd6ff;box-shadow:0 0 6px rgba(143,214,255,0.4)"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span style="color:#bcc8d1">Tarde</span><span class="font-semibold" style="color:#e0e2ea">62%</span>
+                </div>
+                <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.06)">
+                  <div class="h-full rounded-full" style="width:62%;background:#70df31;box-shadow:0 0 6px rgba(112,223,49,0.4)"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span style="color:#bcc8d1">Noche</span><span class="font-semibold" style="color:#e0e2ea">40%</span>
+                </div>
+                <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.06)">
+                  <div class="h-full rounded-full" style="width:40%;background:#fcc554"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card rounded-2xl p-5">
+            <h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#bcc8d1;opacity:.7">Próximo hito</h4>
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(143,214,255,0.1)">
+                <span class="material-symbols-outlined" style="color:#8fd6ff">sprint</span>
+              </div>
+              <div>
+                <p class="font-semibold text-sm" style="color:#e0e2ea">Evaluación VO2 Max</p>
+                <p class="text-xs mt-0.5" style="color:#87929b">Vie 18 · 17:00 · Centro Rend.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card rounded-2xl p-5" style="border-top:2px solid rgba(112,223,49,0.3)">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="material-symbols-outlined text-[18px]" style="color:#70df31">flare</span>
+              <h4 class="text-xs font-bold uppercase tracking-wider" style="color:#e0e2ea">Tip del día</h4>
+            </div>
+            <p class="text-sm leading-relaxed" style="color:#bcc8d1">Mantené la sesión de movilidad de las 14:00 para reducir el ácido láctico tras el HIIT matutino.</p>
+          </div>
+
+          <!-- Mini resumen del día -->
+          <div class="stat-card rounded-2xl p-5" id="day-summary">
+            <h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#bcc8d1;opacity:.7">Eventos de hoy</h4>
+            <div id="day-summary-list" class="space-y-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VISTA MES ── -->
+    <div id="view-month" class="view-panel hidden">
+      <div class="cal-shell rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 border-b flex items-center justify-between" style="border-color:rgba(255,255,255,0.06)">
+          <h3 class="font-display font-bold text-lg" style="color:#e0e2ea" id="month-title">Mayo 2024</h3>
+          <div class="flex gap-4 text-xs" style="color:#bcc8d1">
+            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full" style="background:#70df31"></span>Entreno</span>
+            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full" style="background:#00bfff"></span>Estudio</span>
+            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full" style="background:#fcc554"></span>Recuperación</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 border-b" style="border-color:rgba(255,255,255,0.06)">
+          {["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"].map(d => (
+            <div class="py-2.5 text-center text-[10px] font-bold uppercase tracking-wider" style="color:#bcc8d1">{d}</div>
           ))}
         </div>
-
-        <!-- Cuerpo -->
-        <div class="overflow-y-auto custom-scrollbar relative" style="max-height: 480px">
-          <div class="grid grid-cols-8 min-h-full">
-            <!-- Horas -->
-            <div class="col-span-1 border-r border-outline-variant/10">
-              {hours.map(h => (
-                <div class="h-16 flex items-start justify-end pr-3 pt-2 text-[10px] text-outline font-bold">{h}</div>
-              ))}
-            </div>
-
-            <!-- Días (7 columnas) -->
-            <div class="col-span-7 grid grid-cols-7 relative">
-              <!-- Líneas horizontales -->
-              <div class="absolute inset-0 pointer-events-none" style="background-size: 100% 64px; background-image: linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)"></div>
-
-              <!-- Divisores verticales -->
-              {[...Array(7)].map((_, i) => (
-                <div class={`${i === 1 ? "bg-primary/[0.02]" : ""} border-r last:border-0 border-outline-variant/5`}></div>
-              ))}
-
-              <!-- Eventos -->
-              <!-- Lunes: Anatomía 08–10 = top 64px, h 128px -->
-              <div class="absolute" style="top:64px; left:0%; width:14.28%; height:128px; padding:4px">
-                <div class="h-full rounded-xl bg-primary-container/10 border-l-4 border-primary-container p-2.5 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <span class="block text-[9px] font-bold text-primary-container uppercase">Estudio</span>
-                  <p class="text-xs font-semibold text-white mt-0.5">Clase de Anatomía</p>
-                  <div class="flex items-center gap-1 mt-1.5 text-outline text-[10px]">
-                    <span class="material-symbols-outlined text-[11px]">schedule</span>
-                    08:00 – 10:00
-                  </div>
-                </div>
-              </div>
-
-              <!-- Martes: HIIT 09:30–11 = top 160px, h 96px -->
-              <div class="absolute" style="top:160px; left:14.28%; width:14.28%; height:96px; padding:4px">
-                <div class="h-full rounded-xl bg-secondary/10 border-l-4 border-secondary p-2.5 hover:scale-[1.02] transition-transform cursor-pointer shadow-[0_0_12px_rgba(112,223,49,0.15)]">
-                  <span class="block text-[9px] font-bold text-secondary uppercase">Entrenamiento</span>
-                  <p class="text-xs font-semibold text-white mt-0.5">Sesión HIIT Elite</p>
-                  <div class="flex items-center gap-1 mt-1.5 text-outline text-[10px]">
-                    <span class="material-symbols-outlined text-[11px]">schedule</span>
-                    09:30 – 11:00
-                  </div>
-                </div>
-              </div>
-
-              <!-- Miércoles: Criofisio 15:00–16 = top 320px, h 64px -->
-              <div class="absolute" style="top:320px; left:28.56%; width:14.28%; height:64px; padding:4px">
-                <div class="h-full rounded-xl bg-white/5 border-l-4 border-outline p-2.5 hover:bg-white/10 transition-all cursor-pointer">
-                  <span class="block text-[9px] font-bold text-on-surface-variant uppercase">Recuperación</span>
-                  <p class="text-xs font-semibold text-white mt-0.5">Criofisioterapia</p>
-                </div>
-              </div>
-
-              <!-- Viernes: Examen 08–12 = top 64px, h 192px -->
-              <div class="absolute" style="top:64px; left:57.12%; width:14.28%; height:192px; padding:4px">
-                <div class="h-full rounded-xl bg-primary-container/10 border-l-4 border-primary-container p-2.5 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <span class="block text-[9px] font-bold text-primary-container uppercase">Estudio</span>
-                  <p class="text-xs font-semibold text-white mt-0.5">Examen Fisiología</p>
-                  <p class="text-[10px] text-outline mt-1 leading-snug">Revisión de sistemas metabólicos.</p>
-                </div>
-              </div>
-
-              <!-- Indicador hora actual -->
-              <div class="absolute flex items-center pointer-events-none z-10" style="top:188px; left:0; width:100%">
-                <div class="w-2.5 h-2.5 rounded-full bg-error border-2 border-surface shadow-[0_0_8px_rgba(255,180,171,0.5)]"></div>
-                <div class="flex-1 h-[1.5px] bg-error/50"></div>
-              </div>
-
-            </div>
-          </div>
-        </div>
+        <div class="grid grid-cols-7" id="month-grid"></div>
       </div>
+    </div>
 
-      <!-- Resumen lateral solo desktop -->
-      <div class="hidden md:grid grid-cols-3 gap-4">
-        <div class="glass rounded-2xl p-5">
-          <h4 class="text-xs text-on-surface-variant uppercase tracking-widest mb-4 opacity-70">Carga Semanal</h4>
-          <div class="relative w-24 h-24 mx-auto mb-4">
-            <svg class="w-full h-full -rotate-90" viewBox="0 0 96 96">
-              <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
-              <circle cx="48" cy="48" r="40" fill="none" stroke="#70df31" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="70" stroke-linecap="round"/>
-            </svg>
-            <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <span class="font-display text-2xl font-bold text-on-surface">72%</span>
-              <span class="text-[9px] text-on-surface-variant uppercase">Meta</span>
-            </div>
-          </div>
-          <ul class="space-y-2">
-            {[
-              ["#70df31","Entrenamiento","12h"],
-              ["#00bfff","Estudio","24h"],
-              ["#87929b","Descanso","8h"],
-            ].map(([color, label, val]) => (
-              <li class="flex items-center gap-2 text-xs">
-                <span class="w-2 h-2 rounded-full shrink-0" style={`background:${color}`}></span>
-                <span class="text-on-surface-variant flex-1">{label}</span>
-                <span class="text-on-surface font-semibold">{val}</span>
-              </li>
-            ))}
-          </ul>
+    <!-- ── VISTA LISTA ── -->
+    <div id="view-list" class="view-panel hidden">
+      <div id="list-container" class="space-y-3"></div>
+    </div>
+
+  </main>
+
+  <!-- Nav mobile -->
+  <nav class="fixed bottom-0 w-full z-40 flex justify-around items-center px-4 py-3 backdrop-blur-xl border-t border-white/5 rounded-t-2xl md:hidden"
+       style="background:rgba(38,42,48,0.8);padding-bottom:calc(0.75rem + env(safe-area-inset-bottom))">
+    <a class="flex flex-col items-center transition-all" style="color:#87929b" href="/demo/atleta">
+      <span class="material-symbols-outlined text-[22px]">home</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Inicio</span>
+    </a>
+    <a class="flex flex-col items-center transition-all" style="color:#87929b" href="#">
+      <span class="material-symbols-outlined text-[22px]">fitness_center</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Entrenos</span>
+    </a>
+    <a class="flex flex-col items-center scale-110" style="color:#8fd6ff" href="#">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">calendar_today</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Agenda</span>
+    </a>
+    <a class="flex flex-col items-center relative transition-all" style="color:#87929b" href="#">
+      <span class="material-symbols-outlined text-[22px]">error</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Alertas</span>
+      <span class="absolute top-0 right-0 w-2 h-2 rounded-full" style="background:#ffb4ab;border:2px solid #262a30"></span>
+    </a>
+    <a class="flex flex-col items-center transition-all" style="color:#87929b" href="#">
+      <span class="material-symbols-outlined text-[22px]">account_circle</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Perfil</span>
+    </a>
+  </nav>
+
+</div>
+</Layout>
+
+<style>
+  .cal-shell {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .hour-col { width: 52px; flex-shrink: 0; }
+  .view-btn { color: #bcc8d1; }
+  .view-btn.active { background: rgba(143,214,255,0.15); color: #8fd6ff; }
+
+  .ev-block {
+    position: absolute;
+    border-radius: 8px;
+    padding: 5px 8px;
+    overflow: hidden;
+    cursor: pointer;
+    pointer-events: all;
+    border-left: 3px solid;
+    transition: transform .15s, filter .15s;
+  }
+  .ev-block:hover { transform: scale(1.015); filter: brightness(1.15); z-index: 30; }
+  .ev-block .ev-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+  .ev-block .ev-title { font-size: 11px; font-weight: 600; color: #e0e2ea; margin-top: 2px; line-height: 1.25; }
+  .ev-block .ev-sub   { font-size: 9px; color: rgba(188,200,209,.65); margin-top: 3px; display:flex; align-items:center; gap:2px; }
+
+  /* scrollbar hide */
+  #week-scroll::-webkit-scrollbar,
+  #day-grid::-webkit-scrollbar,
+  .overflow-y-auto::-webkit-scrollbar { display:none }
+</style>
+
+<script>
+// ─── Config ─────────────────────────────────────────────────────────────────
+const HOUR_H  = 72;   // px por hora
+const START_H = 7;    // primera hora (07:00)
+const END_H   = 20;   // última hora  (20:00)
+const TOTAL_H = END_H - START_H;
+const HOURS   = Array.from({length: TOTAL_H + 1}, (_,i) => {
+  const h = START_H + i;
+  return `${h.toString().padStart(2,'0')}:00`;
+});
+
+// Tipos de evento
+const TYPES = {
+  train: { bg:'rgba(112,223,49,.13)',  border:'#70df31', text:'#70df31', label:'Entrenamiento' },
+  study: { bg:'rgba(0,191,255,.13)',   border:'#00bfff', text:'#00bfff', label:'Estudio'       },
+  recov: { bg:'rgba(252,197,84,.13)',  border:'#fcc554', text:'#fcc554', label:'Recuperación'  },
+  coach: { bg:'rgba(255,180,171,.13)', border:'#ffb4ab', text:'#ffb4ab', label:'Coach'         },
+  match: { bg:'rgba(143,214,255,.13)', border:'#8fd6ff', text:'#8fd6ff', label:'Partido'       },
+};
+
+// Eventos: day=0→Lun, start en horas decimales
+const EVENTS = [
+  { day:0, start:8,    dur:2,    type:'study', title:'Anatomía Funcional', loc:'Aula 3' },
+  { day:0, start:16,   dur:1.5,  type:'train', title:'Fuerza Explosiva',   loc:'Gym Central' },
+  { day:1, start:9.5,  dur:1.5,  type:'train', title:'Sesión HIIT Elite',  loc:'Pista Atletismo' },
+  { day:1, start:14,   dur:1,    type:'recov', title:'Movilidad Suave',    loc:'Sala Recup.' },
+  { day:2, start:11,   dur:1,    type:'coach', title:'Video Análisis',     loc:'Sala Táctica' },
+  { day:2, start:15,   dur:0.75, type:'recov', title:'Criofisioterapia',   loc:'Centro Méd.' },
+  { day:3, start:9,    dur:2,    type:'train', title:'Series 400m',        loc:'Estadio' },
+  { day:4, start:8,    dur:4,    type:'study', title:'Examen Fisiología',  loc:'Aula Magna' },
+  { day:4, start:17,   dur:1.5,  type:'match', title:'Evaluación VO2 Max', loc:'Centro Rend.' },
+  { day:5, start:10,   dur:2,    type:'train', title:'Partido Amistoso',   loc:'Estadio Mun.' },
+];
+
+const DAY_NAMES   = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+const DAY_FULL    = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+// Estado
+let currentView = 'week';
+let weekOffset  = 0;
+let dayOffset   = 0; // días desde el lunes base
+
+const BASE_MONDAY = new Date(2024, 4, 12); // 12 mayo 2024
+
+function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+function getMonday(wo) { return addDays(BASE_MONDAY, wo * 7); }
+function isToday(d) {
+  const t = new Date();
+  return d.getDate()===t.getDate() && d.getMonth()===t.getMonth() && d.getFullYear()===t.getFullYear();
+}
+function fmtDate(d) { return `${d.getDate()} de ${MONTH_NAMES[d.getMonth()]}`; }
+function fmtRange(d0, d6) {
+  return `Semana del ${d0.getDate()} al ${d6.getDate()} de ${MONTH_NAMES[d0.getMonth()]}`;
+}
+function timeStr(decimal) {
+  const h = Math.floor(decimal), m = Math.round((decimal % 1) * 60);
+  return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
+}
+function yFromH(h) { return (h - START_H) * HOUR_H; }
+
+// ── Helpers de render ────────────────────────────────────────────────────────
+function buildHourLines(container, totalPx) {
+  container.innerHTML = '';
+  container.style.height = totalPx + 'px';
+  HOURS.forEach((_, i) => {
+    const line = document.createElement('div');
+    line.style.cssText = `position:absolute;left:0;right:0;top:${i * HOUR_H}px;height:1px;background:rgba(255,255,255,0.05)`;
+    container.appendChild(line);
+  });
+}
+
+function buildHourLabels(container, totalPx) {
+  container.innerHTML = '';
+  container.style.height = totalPx + 'px';
+  HOURS.forEach((h, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = `position:absolute;right:0;top:${i * HOUR_H - 8}px;width:100%;text-align:right;padding-right:8px;font-size:10px;font-weight:700;color:#87929b`;
+    div.textContent = h;
+    container.appendChild(div);
+  });
+}
+
+function buildNowIndicator(indicator) {
+  const now = new Date();
+  const hDec = now.getHours() + now.getMinutes() / 60;
+  if (hDec >= START_H && hDec <= END_H) {
+    indicator.style.cssText = `position:absolute;left:0;right:0;display:flex;align-items:center;z-index:20;pointer-events:none;top:${yFromH(hDec)}px`;
+  } else {
+    indicator.style.display = 'none';
+  }
+}
+
+function makeEventBlock(ev, extraStyle) {
+  const c   = TYPES[ev.type];
+  const top = yFromH(ev.start);
+  const h   = ev.dur * HOUR_H - 4;
+  const div = document.createElement('div');
+  div.className = 'ev-block';
+  div.style.cssText = `top:${top}px;height:${h}px;background:${c.bg};border-left-color:${c.border};${extraStyle}`;
+  div.innerHTML = `
+    <div class="ev-label" style="color:${c.text}">${c.label}</div>
+    <div class="ev-title">${ev.title}</div>
+    <div class="ev-sub"><span class="material-symbols-outlined" style="font-size:10px">schedule</span>${timeStr(ev.start)} – ${timeStr(ev.start + ev.dur)}${ev.loc ? ` &nbsp;·&nbsp; ${ev.loc}` : ''}</div>
+  `;
+  return div;
+}
+
+// ── VISTA SEMANA ─────────────────────────────────────────────────────────────
+function buildWeekView() {
+  const monday = getMonday(weekOffset);
+  const sunday = addDays(monday, 6);
+  document.getElementById('week-label').textContent = fmtRange(monday, sunday);
+
+  const totalPx = TOTAL_H * HOUR_H;
+
+  // Cabecera días
+  const hdr = document.getElementById('week-day-headers');
+  hdr.innerHTML = '';
+  hdr.style.cssText = 'display:flex;flex:1';
+  for (let i = 0; i < 7; i++) {
+    const d     = addDays(monday, i);
+    const today = isToday(d);
+    const cell  = document.createElement('div');
+    cell.style.cssText = `flex:1;padding:10px 4px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);${today ? 'background:rgba(143,214,255,0.05)' : ''}`;
+    if (i === 6) cell.style.borderRight = 'none';
+    cell.innerHTML = `
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:${today ? '#8fd6ff' : '#87929b'}">${DAY_NAMES[i]}</div>
+      <div style="${today
+        ? 'width:28px;height:28px;border-radius:50%;background:#8fd6ff;color:#003549;display:flex;align-items:center;justify-content:center;margin:4px auto 0;font-weight:800;font-size:14px'
+        : 'font-size:20px;font-weight:700;color:#e0e2ea;margin-top:2px'
+      }">${d.getDate()}</div>
+    `;
+    hdr.appendChild(cell);
+  }
+
+  // Horas
+  const hourCol = document.getElementById('week-hours');
+  buildHourLabels(hourCol, totalPx);
+
+  // Grid interior
+  const grid = document.getElementById('week-day-grid');
+  grid.style.height = totalPx + 'px';
+
+  // Líneas horizontales
+  buildHourLines(document.getElementById('week-hlines'), totalPx);
+
+  // Líneas verticales
+  const vlines = document.getElementById('week-vlines');
+  vlines.innerHTML = '';
+  vlines.style.height = totalPx + 'px';
+  for (let i = 0; i < 7; i++) {
+    const v = document.createElement('div');
+    v.style.cssText = `flex:1;border-right:1px solid rgba(255,255,255,0.05);height:100%`;
+    if (i === 6) v.style.borderRight = 'none';
+    // highlight today
+    const d = addDays(monday, i);
+    if (isToday(d)) v.style.background = 'rgba(143,214,255,0.02)';
+    vlines.appendChild(v);
+  }
+
+  // Eventos
+  const evLayer = document.getElementById('week-events');
+  evLayer.innerHTML = '';
+  evLayer.style.height = totalPx + 'px';
+  EVENTS.forEach(ev => {
+    const colW = 100 / 7;
+    const left = `calc(${ev.day * colW}% + 3px)`;
+    const width = `calc(${colW}% - 6px)`;
+    const block = makeEventBlock(ev, `left:${left};width:${width}`);
+    evLayer.appendChild(block);
+  });
+
+  // Indicador hora actual
+  buildNowIndicator(document.getElementById('week-now'));
+
+  // Auto-scroll a hora actual
+  const now = new Date();
+  const hDec = now.getHours() + now.getMinutes() / 60;
+  const scroll = document.getElementById('week-scroll');
+  scroll.scrollTop = Math.max(0, yFromH(hDec) - 80);
+}
+
+// ── VISTA DÍA ────────────────────────────────────────────────────────────────
+function buildDayView() {
+  const monday  = getMonday(weekOffset);
+  const current = addDays(monday, dayOffset);
+  const dow     = dayOffset % 7;
+
+  // Cabecera
+  document.getElementById('day-name-label').textContent = DAY_FULL[dow] || DAY_NAMES[dow % 7];
+  document.getElementById('day-date-label').textContent = fmtDate(current);
+  if (isToday(current)) {
+    document.getElementById('day-date-label').style.color = '#8fd6ff';
+  } else {
+    document.getElementById('day-date-label').style.color = '#e0e2ea';
+  }
+
+  const dayEvs = EVENTS.filter(e => e.day === (dow % 7));
+  document.getElementById('day-event-count').textContent =
+    `${dayEvs.length} evento${dayEvs.length !== 1 ? 's' : ''}`;
+
+  const totalPx = TOTAL_H * HOUR_H;
+
+  // Horas
+  buildHourLabels(document.getElementById('day-hours'), totalPx);
+
+  // Líneas horizontales
+  const dayHlines = document.getElementById('day-hlines');
+  buildHourLines(dayHlines, totalPx);
+  document.getElementById('day-events-col').style.height = totalPx + 'px';
+
+  // Eventos
+  const evCol = document.getElementById('day-events');
+  evCol.innerHTML = '';
+  evCol.style.height = totalPx + 'px';
+  dayEvs.forEach(ev => {
+    const block = makeEventBlock(ev, 'left:8px;right:8px');
+    evCol.appendChild(block);
+  });
+
+  // Indicador
+  buildNowIndicator(document.getElementById('day-now'));
+
+  // Resumen lateral
+  const list = document.getElementById('day-summary-list');
+  list.innerHTML = '';
+  if (dayEvs.length === 0) {
+    list.innerHTML = '<p style="font-size:12px;color:#87929b">Sin eventos este día</p>';
+  } else {
+    dayEvs.forEach(ev => {
+      const c   = TYPES[ev.type];
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)';
+      row.innerHTML = `
+        <div style="width:3px;height:36px;border-radius:4px;background:${c.border};flex-shrink:0"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:${c.text}">${c.label}</div>
+          <div style="font-size:12px;font-weight:600;color:#e0e2ea;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ev.title}</div>
+          <div style="font-size:10px;color:#87929b;margin-top:1px">${timeStr(ev.start)} – ${timeStr(ev.start + ev.dur)}</div>
         </div>
-        <div class="glass rounded-2xl p-5 col-span-2">
-          <h4 class="text-xs text-on-surface-variant uppercase tracking-widest mb-4 opacity-70">Próximo hito</h4>
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-primary text-2xl">sprint</span>
-            </div>
-            <div>
-              <p class="font-display font-semibold text-on-surface">Evaluación VO2 Max</p>
-              <p class="text-xs text-on-surface-variant mt-0.5">Viernes 18, 17:00 · Centro de Rendimiento</p>
-            </div>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  // Auto-scroll
+  const now = new Date();
+  const hDec = now.getHours() + now.getMinutes() / 60;
+  const dayScroll = document.getElementById('day-grid').parentElement;
+  if (dayScroll) dayScroll.scrollTop = Math.max(0, yFromH(hDec) - 100);
+}
+
+// ── VISTA MES ────────────────────────────────────────────────────────────────
+function buildMonthView() {
+  const monday = getMonday(weekOffset);
+  const year   = monday.getFullYear();
+  const month  = monday.getMonth();
+  document.getElementById('month-title').textContent = `${MONTH_NAMES[month]} ${year}`;
+
+  const grid = document.getElementById('month-grid');
+  grid.innerHTML = '';
+
+  const firstDay = new Date(year, month, 1);
+  let startDow = (firstDay.getDay() + 6) % 7; // lun=0
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const totalCells  = Math.ceil((startDow + daysInMonth) / 7) * 7;
+
+  for (let i = 0; i < totalCells; i++) {
+    const dayNum  = i - startDow + 1;
+    const inMonth = dayNum >= 1 && dayNum <= daysInMonth;
+    const d       = new Date(year, month, dayNum);
+    const today   = inMonth && isToday(d);
+
+    const evs = inMonth ? EVENTS.filter(e => {
+      const evDate = addDays(BASE_MONDAY, e.day);
+      return evDate.getDate() === dayNum && evDate.getMonth() === month;
+    }) : [];
+
+    const cell = document.createElement('div');
+    cell.style.cssText = `min-height:88px;padding:8px;border-bottom:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05);${!inMonth ? 'opacity:.2' : ''}`;
+
+    const numEl = today
+      ? `<span style="width:24px;height:24px;border-radius:50%;background:#8fd6ff;color:#003549;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">${dayNum}</span>`
+      : `<span style="font-size:13px;font-weight:600;color:#e0e2ea">${inMonth ? dayNum : ''}</span>`;
+
+    const evHtml = evs.map(ev => {
+      const c = TYPES[ev.type];
+      return `<div style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:${c.bg};color:${c.text}">${ev.title}</div>`;
+    }).join('');
+
+    cell.innerHTML = `${numEl}<div style="margin-top:4px">${evHtml}</div>`;
+    grid.appendChild(cell);
+  }
+}
+
+// ── VISTA LISTA ──────────────────────────────────────────────────────────────
+function buildListView() {
+  const monday    = getMonday(weekOffset);
+  const container = document.getElementById('list-container');
+  container.innerHTML = '';
+
+  for (let d = 0; d < 7; d++) {
+    const day    = addDays(monday, d);
+    const today  = isToday(day);
+    const dayEvs = EVENTS.filter(e => e.day === d);
+
+    const group = document.createElement('div');
+    group.style.cssText = 'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;margin-bottom:8px';
+
+    const hdrBg = today ? 'background:rgba(143,214,255,0.05)' : '';
+    const numStyle = today
+      ? 'width:32px;height:32px;border-radius:50%;background:#8fd6ff;color:#003549;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:14px'
+      : 'width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.06);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#e0e2ea';
+    const todayBadge = today ? `<span style="font-size:10px;background:rgba(143,214,255,0.15);color:#8fd6ff;padding:2px 8px;border-radius:99px;font-weight:700;margin-left:8px">HOY</span>` : '';
+    const countText = dayEvs.length > 0
+      ? `<span style="margin-left:auto;font-size:12px;color:#bcc8d1">${dayEvs.length} evento${dayEvs.length > 1 ? 's' : ''}</span>`
+      : `<span style="margin-left:auto;font-size:12px;color:#87929b">Sin eventos</span>`;
+
+    let evRows = '';
+    dayEvs.forEach(ev => {
+      const c = TYPES[ev.type];
+      evRows += `
+        <div style="padding:12px 20px;display:flex;align-items:center;gap:14px;border-top:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background=''">
+          <div style="width:3px;align-self:stretch;border-radius:4px;background:${c.border};flex-shrink:0"></div>
+          <div style="width:52px;flex-shrink:0">
+            <div style="font-size:12px;font-weight:700;color:#e0e2ea">${timeStr(ev.start)}</div>
+            <div style="font-size:10px;color:#87929b">${timeStr(ev.start + ev.dur)}</div>
           </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:${c.text}">${c.label}</div>
+            <div style="font-size:13px;font-weight:600;color:#e0e2ea;margin-top:2px">${ev.title}</div>
+            ${ev.loc ? `<div style="font-size:11px;color:#87929b;margin-top:2px">${ev.loc}</div>` : ''}
+          </div>
+          <div style="padding:3px 10px;border-radius:8px;font-size:10px;font-weight:700;background:${c.bg};color:${c.text};flex-shrink:0">${Math.floor(ev.dur)}h${ev.dur % 1 ? Math.round((ev.dur % 1) * 60) + 'm' : ''}</div>
+          <span class="material-symbols-outlined" style="font-size:18px;color:#87929b">chevron_right</span>
         </div>
+      `;
+    });
+
+    group.innerHTML = `
+      <div style="padding:10px 16px;display:flex;align-items:center;gap:10px;${hdrBg}">
+        <div class="${numStyle}">${day.getDate()}</div>
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:${today ? '#8fd6ff' : '#bcc8d1'}">${DAY_NAMES[d]}</span>
+        ${todayBadge}
+        ${countText}
       </div>
+      ${evRows}
+    `;
+    container.appendChild(group);
+  }
+}
 
-    </main>
+// ── Switcher ─────────────────────────────────────────────────────────────────
+function switchView(v) {
+  currentView = v;
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`view-${v}`)?.classList.remove('hidden');
+  document.querySelector(`[data-view="${v}"]`)?.classList.add('active');
+  if (v === 'week')  buildWeekView();
+  if (v === 'day')   buildDayView();
+  if (v === 'month') buildMonthView();
+  if (v === 'list')  buildListView();
+}
 
-    <!-- Nav mobile -->
-    <nav class="fixed bottom-0 w-full z-40 flex justify-around items-center px-4 py-3 bg-surface-container-high/80 backdrop-blur-xl border-t border-white/5 rounded-t-2xl md:hidden" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom))">
-      <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="/demo/atleta">
-        <span class="material-symbols-outlined text-[22px]">home</span>
-        <span class="text-[9px] font-bold uppercase mt-0.5">Inicio</span>
-      </a>
-      <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="#">
-        <span class="material-symbols-outlined text-[22px]">fitness_center</span>
-        <span class="text-[9px] font-bold uppercase mt-0.5">Entrenos</span>
-      </a>
-      <a class="flex flex-col items-center text-primary scale-110" href="#">
-        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">calendar_today</span>
-        <span class="text-[9px] font-bold uppercase mt-0.5">Agenda</span>
-      </a>
-      <a class="flex flex-col items-center text-outline relative hover:text-primary transition-all" href="#">
-        <span class="material-symbols-outlined text-[22px]">error</span>
-        <span class="text-[9px] font-bold uppercase mt-0.5">Alertas</span>
-        <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border border-surface-container-high"></span>
-      </a>
-      <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="#">
-        <span class="material-symbols-outlined text-[22px]">account_circle</span>
-        <span class="text-[9px] font-bold uppercase mt-0.5">Perfil</span>
-      </a>
-    </nav>
+// ── Init ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchView(btn.dataset.view));
+  });
+  document.getElementById('prev-week')?.addEventListener('click', () => { weekOffset--; switchView(currentView); });
+  document.getElementById('next-week')?.addEventListener('click', () => { weekOffset++; switchView(currentView); });
+  document.getElementById('today-btn')?.addEventListener('click', () => { weekOffset = 0; dayOffset = 0; switchView(currentView); });
+  document.getElementById('day-prev')?.addEventListener('click', () => { dayOffset = Math.max(0, dayOffset - 1); buildDayView(); });
+  document.getElementById('day-next')?.addEventListener('click', () => { dayOffset = Math.min(6, dayOffset + 1); buildDayView(); });
 
-  </div>
-
-</DemoLayout>
+  switchView('week');
+});
+</script>

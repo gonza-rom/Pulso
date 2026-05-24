@@ -1,0 +1,249 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Sidebar from "../../../components/demo/Sidebar.astro";
+---
+
+<Layout title="Mi Perfil · Atleta · PULSO" demo="atleta" hideDemoOnMobile>
+<div class="flex min-h-screen">
+
+  <Sidebar role="atleta" current="perfil" />
+
+  <!-- Header mobile -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/20 md:hidden">
+    <span class="font-display text-xl font-extrabold tracking-tighter text-primary">PULSO</span>
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary">notifications</span>
+      <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-[16px]">person</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="md:ml-64 flex-1 pt-20 md:pt-8 pb-28 md:pb-10 px-4 md:px-8">
+
+    <!-- ── HEADER PERFIL ── -->
+    <header class="flex flex-col md:flex-row items-center md:items-end gap-6 mb-8">
+
+      <!-- Avatar + nivel -->
+      <div class="relative shrink-0">
+        <div class="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-primary/40 ring-4 ring-primary/10 shadow-[0_0_32px_rgba(143,214,255,0.2)] overflow-hidden bg-surface-container-high flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary/40" style="font-size:72px;">account_circle</span>
+        </div>
+        <div class="absolute -bottom-2 -right-2 bg-primary text-on-primary text-xs font-black px-2.5 py-1 rounded-full border-2 border-background shadow-lg">
+          LVL 42
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="flex-1 text-center md:text-left">
+        <h1 class="font-display text-2xl md:text-3xl font-bold text-on-surface">Alex Rios</h1>
+        <p class="text-primary/80 text-sm font-medium mt-1">Atleta Elite · Especialista en Alto Rendimiento</p>
+
+        <!-- Stats físicos -->
+        <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-4">
+          {[
+            { label:"Altura",  val:"184cm",   color:"text-on-surface" },
+            { label:"Peso",    val:"78 kg",    color:"text-on-surface" },
+            { label:"Grasa",   val:"8.2%",     color:"text-secondary"  },
+            { label:"HRV",     val:"92 ms",    color:"text-primary"    },
+          ].map(s => (
+            <div class="glass rounded-xl px-4 py-2.5 text-center min-w-[72px]">
+              <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">{s.label}</p>
+              <p class={`font-display font-bold text-base mt-0.5 ${s.color}`}>{s.val}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Botón editar desktop -->
+      <button class="hidden md:flex items-center gap-2 px-5 py-2.5 border border-primary/30 text-primary rounded-xl text-sm font-bold hover:bg-primary/5 transition-all">
+        <span class="material-symbols-outlined text-[18px]">edit</span>
+        Editar Perfil
+      </button>
+    </header>
+
+    <!-- ── XP PROGRESS ── -->
+    <div class="glass rounded-2xl p-5 md:p-6 mb-6">
+      <div class="flex items-end justify-between mb-3">
+        <div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-widest mb-1">Progreso de Nivel</p>
+          <p class="font-display font-bold text-on-surface">
+            2 450 <span class="text-sm text-on-surface-variant font-normal">/ 3 000 XP para Nivel 43</span>
+          </p>
+        </div>
+        <span class="text-primary text-xs font-bold">81%</span>
+      </div>
+      <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden mb-5">
+        <div class="h-full bg-gradient-to-r from-primary to-primary-container rounded-full shadow-[0_0_12px_rgba(143,214,255,0.4)]" style="width:81%"></div>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        {[
+          { icon:"fitness_center", label:"Workouts",  val:"128",   color:"text-primary"   },
+          { icon:"timer",          label:"Horas",     val:"245h",  color:"text-secondary" },
+          { icon:"local_fire_department", label:"Calorías", val:"54.2k", color:"text-tertiary" },
+        ].map(s => (
+          <div class="glass rounded-xl p-4 flex items-center gap-3">
+            <div class={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${s.color} bg-white/5`}>
+              <span class="material-symbols-outlined text-[20px]">{s.icon}</span>
+            </div>
+            <div class="min-w-0">
+              <p class="text-[10px] text-on-surface-variant uppercase tracking-wider truncate">{s.label}</p>
+              <p class={`font-display font-bold text-lg ${s.color}`}>{s.val}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── STREAK / RANKING / LOGROS ── -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+      <!-- Streak -->
+      <div class="glass rounded-2xl p-5 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-20 h-20 bg-secondary/10 rounded-full blur-3xl group-hover:bg-secondary/20 transition-all pointer-events-none"></div>
+        <div class="flex justify-between items-start mb-4">
+          <span class="material-symbols-outlined text-secondary text-3xl">electric_bolt</span>
+          <span class="bg-secondary/20 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">×1.5 Multiplicador</span>
+        </div>
+        <p class="text-xs text-on-surface-variant uppercase tracking-widest mb-1">Racha activa</p>
+        <p class="font-display text-5xl font-black text-on-surface leading-none">12</p>
+        <p class="text-secondary text-xs font-semibold mt-3 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">trending_up</span>
+          ¡Récord personal superado!
+        </p>
+      </div>
+
+      <!-- Ranking -->
+      <div class="glass rounded-2xl p-5 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-20 h-20 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all pointer-events-none"></div>
+        <div class="flex justify-between items-start mb-4">
+          <span class="material-symbols-outlined text-primary text-3xl">military_tech</span>
+          <span class="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Top 1% Global</span>
+        </div>
+        <p class="text-xs text-on-surface-variant uppercase tracking-widest mb-1">Ranking global</p>
+        <p class="font-display text-5xl font-black text-on-surface leading-none">#14</p>
+        <p class="text-primary text-xs font-semibold mt-3 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+          +3 posiciones esta semana
+        </p>
+      </div>
+
+      <!-- Logros recientes -->
+      <div class="glass rounded-2xl p-5">
+        <p class="text-xs text-on-surface-variant uppercase tracking-widest mb-4">Logros Recientes</p>
+        <div class="flex justify-around">
+          {[
+            { icon:"wb_sunny",     label:"Madrugador",  color:"text-tertiary",  bg:"bg-tertiary/10",  border:"border-tertiary/30"  },
+            { icon:"fitness_center",label:"Fuerza Bruta",color:"text-secondary", bg:"bg-secondary/10", border:"border-secondary/30" },
+            { icon:"verified",     label:"Consistencia",color:"text-primary",   bg:"bg-primary/10",   border:"border-primary/30"   },
+          ].map(a => (
+            <div class="flex flex-col items-center gap-2 group cursor-pointer">
+              <div class={`w-14 h-14 rounded-2xl ${a.bg} border ${a.border} flex items-center justify-center group-hover:scale-110 transition-transform duration-200 ${a.color}`}>
+                <span class="material-symbols-outlined text-[22px]">{a.icon}</span>
+              </div>
+              <span class="text-[9px] text-center font-bold text-on-surface uppercase tracking-wider leading-tight max-w-[52px]">{a.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── DATOS PERSONALES ── -->
+    <div class="glass rounded-2xl overflow-hidden mb-6">
+      <div class="px-6 py-4 border-b border-outline-variant/10 flex items-center justify-between">
+        <h3 class="font-display font-semibold text-on-surface">Datos Personales</h3>
+        <button class="text-xs text-primary font-bold flex items-center gap-1 hover:text-primary/80 transition-colors">
+          <span class="material-symbols-outlined text-[16px]">edit</span>
+          Editar
+        </button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-outline-variant/10">
+        {[
+          { label:"Email",        val:"alex.rios@performance.pro", icon:"mail"     },
+          { label:"Teléfono",     val:"+34 654 321 098",           icon:"call"     },
+          { label:"Ubicación",    val:"Catamarca, Argentina",         icon:"location_on" },
+          { label:"Suscripción",  val:"Plan Elite Pro",            icon:"workspace_premium", accent:true },
+        ].map(f => (
+          <div class="px-6 py-4 flex items-center gap-4">
+            <div class={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${f.accent ? "bg-primary/10 text-primary" : "bg-white/5 text-on-surface-variant"}`}>
+              <span class="material-symbols-outlined text-[18px]">{f.icon}</span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">{f.label}</p>
+              <p class={`text-sm font-semibold mt-0.5 truncate ${f.accent ? "text-primary" : "text-on-surface"}`}>{f.val}</p>
+            </div>
+            {f.accent && (
+              <button class="text-[10px] text-primary font-bold uppercase tracking-wider underline underline-offset-2 shrink-0">Gestionar</button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── RENDIMIENTO FÍSICO ── -->
+    <div class="glass rounded-2xl p-5 md:p-6 mb-6">
+      <h3 class="font-display font-semibold text-on-surface mb-5">Métricas de Rendimiento</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {[
+          { label:"VO2 Max",        val:62,   unit:"ml/kg/min", color:"#8fd6ff",  max:80  },
+          { label:"Fuerza relativa",val:1.8,  unit:"× peso corporal", color:"#70df31", max:2.5, raw:"1.8×" },
+          { label:"Recuperación",   val:88,   unit:"HRV score",  color:"#fcc554",  max:100 },
+          { label:"Potencia",       val:340,  unit:"vatios",     color:"#00bfff",  max:500, raw:"340W" },
+        ].map(m => (
+          <div>
+            <div class="flex justify-between items-end mb-2">
+              <div>
+                <p class="text-xs text-on-surface-variant uppercase tracking-wider">{m.label}</p>
+                <p class="font-display font-bold text-on-surface">{m.raw ?? m.val} <span class="text-xs text-on-surface-variant font-normal">{m.unit}</span></p>
+              </div>
+              <span class="text-xs font-bold" style={`color:${m.color}`}>{Math.round((m.val / m.max) * 100)}%</span>
+            </div>
+            <div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+              <div class="h-full rounded-full" style={`width:${Math.round((m.val / m.max) * 100)}%;background:${m.color};box-shadow:0 0 8px ${m.color}55`}></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── ACCIONES ── -->
+    <div class="flex flex-col sm:flex-row gap-3">
+      <button class="flex-1 py-3 rounded-xl bg-surface-container-highest text-on-surface text-sm font-bold hover:bg-surface-variant transition-colors">
+        Configurar Privacidad
+      </button>
+      <button class="flex-1 py-3 rounded-xl bg-gradient-to-r from-primary-container to-primary text-on-primary text-sm font-bold neon-glow hover:scale-[1.01] active:scale-95 transition-all">
+        Guardar Cambios
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Nav mobile -->
+  <nav class="fixed bottom-0 w-full z-40 flex justify-around items-center px-4 py-3 bg-surface-container-high/80 backdrop-blur-xl border-t border-white/5 rounded-t-2xl md:hidden"
+       style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom))">
+    <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="/demo/atleta">
+      <span class="material-symbols-outlined text-[22px]">home</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Inicio</span>
+    </a>
+    <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="#">
+      <span class="material-symbols-outlined text-[22px]">fitness_center</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Entrenos</span>
+    </a>
+    <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="/demo/atleta/agenda">
+      <span class="material-symbols-outlined text-[22px]">calendar_today</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Agenda</span>
+    </a>
+    <a class="flex flex-col items-center text-outline relative hover:text-primary transition-all" href="#">
+      <span class="material-symbols-outlined text-[22px]">error</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Alertas</span>
+      <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border border-surface-container-high"></span>
+    </a>
+    <a class="flex flex-col items-center text-primary scale-110" href="#">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">account_circle</span>
+      <span class="text-[9px] font-bold uppercase mt-0.5">Perfil</span>
+    </a>
+  </nav>
+
+</div>
+</Layout>

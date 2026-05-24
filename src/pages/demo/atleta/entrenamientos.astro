@@ -1,0 +1,393 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Sidebar from "../../../components/demo/Sidebar.astro";
+import DemoBar from "../../../components/demo/DemoBar.astro";
+
+const exercises = [
+  {
+    name: "Power Cleans",
+    tag: "RPE 8.5",
+    stats: [
+      { label: "Series",   value: "5" },
+      { label: "Reps",     value: "3" },
+      { label: "Descanso", value: "180s" },
+    ],
+  },
+  {
+    name: "Box Jumps",
+    tag: "Explosivo",
+    stats: [
+      { label: "Series", value: "4" },
+      { label: "Reps",   value: "6" },
+      { label: "Altura", value: "75cm" },
+    ],
+  },
+  {
+    name: "Deadlift (Trap Bar)",
+    tag: "RPE 9",
+    stats: [
+      { label: "Series", value: "3" },
+      { label: "Reps",   value: "5" },
+      { label: "Peso",   value: "110kg" },
+    ],
+  },
+  {
+    name: "Sprints de Banda",
+    tag: "Velocidad",
+    stats: [
+      { label: "Series", value: "6" },
+      { label: "Dist",   value: "10m" },
+      { label: "Recup",  value: "60s" },
+    ],
+  },
+];
+
+const weekDays = [
+  { label: "LUN", icon: "check_circle",  state: "done"    },
+  { label: "MAR", icon: "fitness_center", state: "idle"   },
+  { label: "MIÉ", icon: "fitness_center", state: "active" },
+  { label: "JUE", icon: "hotel",          state: "rest"   },
+  { label: "VIE", icon: "pool",           state: "idle"   },
+  { label: "SÁB", icon: "sports_soccer",  state: "idle"   },
+  { label: "DOM", icon: "hotel",          state: "rest"   },
+];
+
+const hrZones = [
+  { pct: 30, color: "secondary" },
+  { pct: 45, color: "secondary" },
+  { pct: 65, color: "tertiary"  },
+  { pct: 85, color: "error",    peak: true },
+  { pct: 60, color: "tertiary"  },
+  { pct: 40, color: "secondary" },
+  { pct: 25, color: "secondary" },
+  { pct: 75, color: "error"     },
+];
+---
+
+<Layout title="Entrenamientos · Atleta · PULSO">
+  <div class="flex min-h-screen">
+
+    <Sidebar role="atleta" current="entrenamientos" />
+
+    <!-- Header mobile -->
+    <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/40 backdrop-blur-xl border-b border-white/10 md:hidden">
+      <span class="font-display text-xl font-extrabold tracking-tighter text-primary">PULSO</span>
+      <div class="flex items-center gap-4">
+        <button class="text-on-surface-variant hover:text-secondary transition-colors">
+          <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary text-[16px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="md:ml-64 flex-1 pt-20 md:pt-10 pb-32 px-4 md:px-8 space-y-6 transition-all">
+
+      <!-- ===== HERO — SESIÓN DE HOY ===== -->
+      <section class="glass-card relative overflow-hidden rounded-2xl min-h-[320px] md:min-h-[400px] flex flex-col justify-end group">
+
+        <!-- Fondo degradado decorativo -->
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none"></div>
+
+        <!-- Orbe de luz superior -->
+        <div class="absolute -top-10 -right-10 w-64 h-64 bg-primary/10 blur-3xl rounded-full pointer-events-none"></div>
+
+        <div class="relative z-10 p-6 md:p-8 space-y-4">
+
+          <!-- Etiqueta + hora -->
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">
+              Siguiente Sesión
+            </span>
+            <span class="flex items-center gap-1 text-on-surface-variant text-xs">
+              <span class="material-symbols-outlined text-[15px]">schedule</span>
+              18:30 — Hoy
+            </span>
+          </div>
+
+          <!-- Título -->
+          <h1 class="font-display text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-2xl">
+            Potencia Explosiva &amp; Recuperación VFC
+          </h1>
+
+          <!-- Pills de info -->
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="glass-card flex items-center gap-2 px-3 py-2 rounded-full border-0">
+              <span class="material-symbols-outlined text-secondary text-[18px]">bolt</span>
+              <span class="text-sm font-semibold">Alta Intensidad</span>
+            </div>
+            <div class="glass-card flex items-center gap-2 px-3 py-2 rounded-full border-0">
+              <span class="material-symbols-outlined text-primary text-[18px]">timer</span>
+              <span class="text-sm">75 Minutos</span>
+            </div>
+            <div class="glass-card flex items-center gap-2 px-3 py-2 rounded-full border-0">
+              <span class="material-symbols-outlined text-tertiary text-[18px]">local_fire_department</span>
+              <span class="text-sm">~850 kcal</span>
+            </div>
+          </div>
+
+          <!-- Acciones -->
+          <div class="flex items-center gap-4 pt-2">
+            <button class="bg-gradient-to-r from-primary to-primary-container text-black font-display font-bold px-6 py-3 rounded-xl flex items-center gap-2 neon-glow hover:scale-105 active:scale-95 transition-all text-sm md:text-base">
+              Iniciar Entreno
+              <span class="material-symbols-outlined text-[20px]">play_circle</span>
+            </button>
+            <button class="text-on-surface-variant hover:text-white border border-white/10 px-5 py-3 rounded-xl hover:bg-white/5 transition-all text-sm">
+              Ver detalles
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== ESTADO DE FORMA + PLAN SEMANAL ===== -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Estado de forma -->
+        <div class="lg:col-span-4 glass-card p-6 space-y-5">
+          <div class="flex justify-between items-center">
+            <h3 class="font-display font-semibold text-white">Estado de Forma</h3>
+            <span class="material-symbols-outlined text-primary">analytics</span>
+          </div>
+
+          <!-- Anillo -->
+          <div class="flex flex-col items-center py-2 gap-4">
+            <div class="relative w-32 h-32">
+              <svg class="w-full h-full" viewBox="0 0 128 128">
+                <circle cx="64" cy="64" r="56" fill="transparent" class="stroke-surface-container-highest" stroke-width="8"/>
+                <circle cx="64" cy="64" r="56" fill="transparent" class="stroke-secondary" stroke-width="8"
+                  stroke-dasharray="352" stroke-dashoffset="53"
+                  stroke-linecap="round"
+                  style="transform:rotate(-90deg);transform-origin:50% 50%;filter:drop-shadow(0 0 6px rgba(112,223,49,0.5))"/>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span class="font-display text-3xl font-bold text-white">85%</span>
+                <span class="text-[9px] text-on-surface-variant uppercase tracking-wider">Ready</span>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <p class="text-secondary font-semibold text-sm">Condición Óptima</p>
+              <p class="text-on-surface-variant text-xs mt-1 max-w-[200px]">
+                Tu VFC es estable. Carga recomendada: 85% de tu capacidad máxima.
+              </p>
+            </div>
+          </div>
+
+          <div class="border-t border-white/[0.06] pt-4 space-y-2">
+            <div class="flex justify-between text-xs uppercase">
+              <span class="text-on-surface-variant">Frecuencia Reposo</span>
+              <span class="text-white font-bold">54 BPM</span>
+            </div>
+            <div class="w-full bg-white/[0.06] h-1.5 rounded-full overflow-hidden">
+              <div class="bg-secondary h-full rounded-full" style="width:54%;box-shadow:0 0 8px rgba(112,223,49,0.4)"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan semanal -->
+        <div class="lg:col-span-8 glass-card p-6 flex flex-col gap-5">
+          <div class="flex justify-between items-center">
+            <h3 class="font-display font-semibold text-white">Plan Semanal</h3>
+            <div class="flex items-center gap-1">
+              <button class="p-1 rounded-lg hover:bg-white/5 transition-colors text-on-surface-variant">
+                <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+              </button>
+              <span class="text-xs font-bold bg-white/[0.06] px-3 py-1 rounded-lg text-on-surface-variant">
+                Mayo 19 – 25
+              </span>
+              <button class="p-1 rounded-lg hover:bg-white/5 transition-colors text-on-surface-variant">
+                <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Grid días -->
+          <div class="grid grid-cols-7 gap-2 flex-1">
+            {weekDays.map(day => (
+              <div class={`rounded-xl flex flex-col items-center justify-center gap-1.5 py-3 transition-all
+                ${day.state === "done"   ? "bg-secondary/10 border border-secondary/25" : ""}
+                ${day.state === "active" ? "bg-primary/15  border border-primary/30 shadow-[0_0_12px_rgba(143,214,255,0.15)]" : ""}
+                ${day.state === "idle"   ? "glass-card cursor-pointer hover:bg-white/10" : ""}
+                ${day.state === "rest"   ? "glass-card opacity-50" : ""}
+              `}>
+                <span class={`text-[10px] font-bold uppercase
+                  ${day.state === "active" ? "text-primary" : "text-on-surface-variant"}`}>
+                  {day.label}
+                </span>
+                <span class={`material-symbols-outlined text-[20px]
+                  ${day.state === "done"   ? "text-secondary" : ""}
+                  ${day.state === "active" ? "text-primary"   : ""}
+                  ${day.state === "idle"   ? "text-on-surface-variant" : ""}
+                  ${day.state === "rest"   ? "text-on-surface-variant" : ""}
+                `}
+                  style={day.state === "done" || day.state === "active" ? "font-variation-settings:'FILL' 1;" : ""}
+                >
+                  {day.icon}
+                </span>
+                {day.state === "active" && (
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <!-- Info fase -->
+          <div class="bg-white/[0.04] border border-white/[0.06] rounded-xl px-4 py-3 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-white">Fase de Volumen Semanal</p>
+                <p class="text-xs text-on-surface-variant">Progreso actual: 3/5 sesiones completadas.</p>
+              </div>
+            </div>
+            <div class="flex -space-x-2 shrink-0">
+              <div class="w-7 h-7 rounded-full border-2 border-background bg-secondary flex items-center justify-center text-[9px] font-bold text-black">✓</div>
+              <div class="w-7 h-7 rounded-full border-2 border-background bg-secondary flex items-center justify-center text-[9px] font-bold text-black">✓</div>
+              <div class="w-7 h-7 rounded-full border-2 border-background bg-white/10 flex items-center justify-center text-[9px] font-bold text-white/40 border-dashed border">3</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== RUTINA DETALLADA ===== -->
+      <section class="glass-card p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <h2 class="font-display font-semibold text-white text-xl">Rutina Detallada</h2>
+            <p class="text-on-surface-variant text-sm mt-0.5">Bloque A: Activación Dinámica y Potencia</p>
+          </div>
+          <button class="self-start md:self-auto bg-white/[0.05] hover:bg-white/10 text-primary px-4 py-2 rounded-xl text-xs font-bold uppercase flex items-center gap-2 transition-all">
+            <span class="material-symbols-outlined text-[18px]">video_library</span>
+            Ver Tutoriales
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {exercises.map(ex => (
+            <div class="flex items-center gap-4 bg-white/[0.03] border border-white/[0.06] p-4 rounded-2xl hover:bg-white/[0.07] transition-all cursor-pointer group">
+
+              <!-- Ícono placeholder del ejercicio -->
+              <div class="w-20 h-20 md:w-24 md:h-24 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-primary/40 text-4xl">fitness_center</span>
+              </div>
+
+              <!-- Info -->
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-display font-semibold text-white text-sm">{ex.name}</h4>
+                  <span class="text-primary text-[10px] font-bold shrink-0 ml-2">{ex.tag}</span>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5">
+                  {ex.stats.map(s => (
+                    <div class="bg-white/[0.05] p-1.5 rounded-lg text-center">
+                      <p class="text-[9px] uppercase text-on-surface-variant mb-0.5">{s.label}</p>
+                      <p class="font-bold text-secondary text-sm">{s.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <span class="material-symbols-outlined text-white/20 group-hover:text-primary transition-colors shrink-0">
+                chevron_right
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ===== ZONAS DE RITMO CARDÍACO ===== -->
+      <section class="glass-card p-6 md:p-8 space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <h3 class="font-display font-semibold text-white text-lg">Zonas de Ritmo Cardíaco (Proyectado)</h3>
+          <div class="flex items-center gap-4 flex-wrap">
+            {[
+              { color: "bg-error",     label: "Anaeróbico" },
+              { color: "bg-tertiary",  label: "Umbral" },
+              { color: "bg-secondary", label: "Aeróbico" },
+            ].map(z => (
+              <div class="flex items-center gap-1.5">
+                <span class={`w-2.5 h-2.5 rounded-full ${z.color}`}></span>
+                <span class="text-[11px] text-on-surface-variant">{z.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Barras -->
+        <div class="h-48 md:h-64 flex items-end justify-around gap-2 relative px-2">
+
+          <!-- Líneas guía -->
+          <div class="absolute inset-0 pointer-events-none">
+            {[25, 50, 75].map(p => (
+              <div class="absolute left-0 right-0 h-px bg-white/[0.04]" style={`bottom:${p}%`}></div>
+            ))}
+          </div>
+
+          {hrZones.map(z => (
+            <div class="flex-1 flex flex-col items-center gap-1 relative" style={`height:${z.pct}%`}>
+              {z.peak && (
+                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-error text-white text-[9px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
+                  PEAK
+                </div>
+              )}
+              <div class={`w-full h-full rounded-t-lg bg-${z.color}/20 border-t border-${z.color}/40`}></div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Labels eje X -->
+        <div class="flex justify-around text-[10px] text-on-surface-variant px-2">
+          {["0m","10m","20m","30m","40m","50m","60m","70m"].map(l => (
+            <span>{l}</span>
+          ))}
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Nav mobile -->
+    <nav class="fixed bottom-0 w-full z-40 flex justify-around items-center px-4 py-3 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-white/[0.05] rounded-t-2xl md:hidden"
+         style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom))">
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Inicio</span>
+      </a>
+      <a class="flex flex-col items-center text-primary" href="#">
+        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">fitness_center</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Entrenos</span>
+      </a>
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta/agenda">
+        <span class="material-symbols-outlined text-[22px]">calendar_today</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Agenda</span>
+      </a>
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta/ranking">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Ranking</span>
+      </a>
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta/rachas">
+        <span class="material-symbols-outlined text-[22px]">local_fire_department</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Rachas</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <DemoBar current="atleta" />
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".glass-card").forEach((el) => {
+    el.addEventListener("mousemove", (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty("--mouse-x", `${((e.clientX - rect.left) / rect.width) * 100}%`);
+      el.style.setProperty("--mouse-y", `${((e.clientY - rect.top) / rect.height) * 100}%`);
+    });
+  });
+</script>
