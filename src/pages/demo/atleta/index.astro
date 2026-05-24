@@ -9,7 +9,10 @@ import Sidebar from "../../../components/demo/Sidebar.astro";
     <Sidebar role="atleta" current="dashboard" />
     <!-- ===== HEADER MOBILE ===== -->
     <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/20 md:hidden">
-      <span class="font-display text-xl font-extrabold tracking-tighter text-primary">PULSO</span>
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 group">
+      <img src="/public/logo.png" alt="logo" class="w-24 h-8" />
+    </a>
       <div class="flex items-center gap-4">
         <span class="material-symbols-outlined text-primary">notifications</span>
         <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
@@ -232,12 +235,15 @@ import Sidebar from "../../../components/demo/Sidebar.astro";
         <span class="material-symbols-outlined text-[22px]">calendar_today</span>
         <span class="text-[9px] font-bold uppercase mt-0.5">Agenda</span>
       </a>
-      <a class="flex flex-col items-center text-outline hover:text-primary transition-all relative" href="#">
-        <span class="material-symbols-outlined text-[22px]">error</span>
-        <span class="text-[9px] font-bold uppercase mt-0.5">Alertas</span>
-        <span class="absolute top-0 right-1 w-2 h-2 bg-error rounded-full border border-surface-container-high"></span>
+      <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="/demo/atleta/ranking">
+        <span class="material-symbols-outlined text-[22px]">Leaderboard</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Ranking</span>
       </a>
-      <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="#">
+      <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="/demo/atleta/rachas">
+        <span class="material-symbols-outlined text-[22px]">local_fire_department</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Rachas</span>
+      </a>
+      <a class="flex flex-col items-center text-outline hover:text-primary transition-all" href="/demo/atleta/perfil">
         <span class="material-symbols-outlined text-[22px]">account_circle</span>
         <span class="text-[9px] font-bold uppercase mt-0.5">Perfil</span>
       </a>
