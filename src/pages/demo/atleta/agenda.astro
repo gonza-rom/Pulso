@@ -440,19 +440,27 @@ function buildWeekView() {
   document.getElementById('week-label').textContent = fmtRange(monday, sunday);
 
   const totalPx = TOTAL_H * HOUR_H;
+  const HOUR_COL_W = 52; // debe coincidir con .hour-col en CSS
 
-  // Cabecera días
+  // ── Cabecera ──────────────────────────────────────────────────────────────
   const hdr = document.getElementById('week-day-headers');
   hdr.innerHTML = '';
-  hdr.style.cssText = 'display:flex;flex:1';
+  // Usar el mismo grid de 7 columnas que el body
+  hdr.style.cssText = 'display:grid;grid-template-columns:repeat(7,1fr);flex:1';
   for (let i = 0; i < 7; i++) {
     const d     = addDays(monday, i);
     const today = isToday(d);
     const cell  = document.createElement('div');
-    cell.style.cssText = `flex:1;padding:10px 4px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);${today ? 'background:rgba(143,214,255,0.05)' : ''}`;
-    if (i === 6) cell.style.borderRight = 'none';
+    cell.style.cssText = `
+      padding: 10px 4px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      ${i === 6 ? 'border-right:none;' : ''}
+      ${today ? 'background:rgba(143,214,255,0.05);' : ''}
+    `;
     cell.innerHTML = `
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:${today ? '#8fd6ff' : '#87929b'}">${DAY_NAMES[i]}</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+                  color:${today ? '#8fd6ff' : '#87929b'}">${DAY_NAMES[i]}</div>
       <div style="${today
         ? 'width:28px;height:28px;border-radius:50%;background:#8fd6ff;color:#003549;display:flex;align-items:center;justify-content:center;margin:4px auto 0;font-weight:800;font-size:14px'
         : 'font-size:20px;font-weight:700;color:#e0e2ea;margin-top:2px'
@@ -461,51 +469,93 @@ function buildWeekView() {
     hdr.appendChild(cell);
   }
 
-  // Horas
-  const hourCol = document.getElementById('week-hours');
-  buildHourLabels(hourCol, totalPx);
+  // ── Horas ─────────────────────────────────────────────────────────────────
+  buildHourLabels(document.getElementById('week-hours'), totalPx);
 
-  // Grid interior
+  // ── Grid interior ─────────────────────────────────────────────────────────
   const grid = document.getElementById('week-day-grid');
   grid.style.height = totalPx + 'px';
+  // Forzar que sea también un grid de 7 columnas para alinear todo
+  grid.style.cssText = `
+    flex: 1;
+    position: relative;
+    height: ${totalPx}px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  `;
 
-  // Líneas horizontales
-  buildHourLines(document.getElementById('week-hlines'), totalPx);
+  // Limpiar layers viejos
+  document.getElementById('week-hlines').innerHTML = '';
+  document.getElementById('week-vlines').innerHTML = '';
+  document.getElementById('week-events').innerHTML = '';
 
-  // Líneas verticales
-  const vlines = document.getElementById('week-vlines');
-  vlines.innerHTML = '';
-  vlines.style.height = totalPx + 'px';
+  // ── 7 columnas: líneas + eventos en la misma estructura ───────────────────
   for (let i = 0; i < 7; i++) {
-    const v = document.createElement('div');
-    v.style.cssText = `flex:1;border-right:1px solid rgba(255,255,255,0.05);height:100%`;
-    if (i === 6) v.style.borderRight = 'none';
-    // highlight today
-    const d = addDays(monday, i);
-    if (isToday(d)) v.style.background = 'rgba(143,214,255,0.02)';
-    vlines.appendChild(v);
+    const d     = addDays(monday, i);
+    const today = isToday(d);
+
+    // Columna contenedora (posición en el grid)
+    const col = document.createElement('div');
+    col.style.cssText = `
+      position: relative;
+      height: ${totalPx}px;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      ${i === 6 ? 'border-right:none;' : ''}
+      ${today ? 'background:rgba(143,214,255,0.02);' : ''}
+    `;
+    // Líneas horizontales de hora dentro de cada columna
+    HOURS.forEach((_, hi) => {
+      const line = document.createElement('div');
+      line.style.cssText = `
+        position:absolute; left:0; right:0;
+        top:${hi * HOUR_H}px; height:1px;
+        background:rgba(255,255,255,0.05);
+        pointer-events:none;
+      `;
+      col.appendChild(line);
+    });
+
+    // Eventos de ese día
+    EVENTS.filter(ev => ev.day === i).forEach(ev => {
+      const block = makeEventBlock(ev, 'left:3px;right:3px;pointer-events:all;');
+      col.appendChild(block);
+    });
+
+    grid.appendChild(col);
   }
 
-  // Eventos
-  const evLayer = document.getElementById('week-events');
-  evLayer.innerHTML = '';
-  evLayer.style.height = totalPx + 'px';
-  EVENTS.forEach(ev => {
-    const colW = 100 / 7;
-    const left = `calc(${ev.day * colW}% + 3px)`;
-    const width = `calc(${colW}% - 6px)`;
-    const block = makeEventBlock(ev, `left:${left};width:${width}`);
-    evLayer.appendChild(block);
-  });
+  // ── Indicador hora actual (sobre el grid completo) ─────────────────────────
+  // Lo agregamos como overlay absoluto sobre week-day-grid
+  // Primero removemos el anterior si existía dentro del grid
+  const oldNow = grid.querySelector('.week-now-line');
+  if (oldNow) oldNow.remove();
 
-  // Indicador hora actual
-  buildNowIndicator(document.getElementById('week-now'));
-
-  // Auto-scroll a hora actual
-  const now = new Date();
+  const now  = new Date();
   const hDec = now.getHours() + now.getMinutes() / 60;
+  if (hDec >= START_H && hDec <= END_H) {
+    const nowLine = document.createElement('div');
+    nowLine.className = 'week-now-line';
+    nowLine.style.cssText = `
+      position:absolute; left:0; right:0;
+      top:${yFromH(hDec)}px;
+      display:flex; align-items:center;
+      z-index:20; pointer-events:none;
+      grid-column: 1 / -1;
+    `;
+    nowLine.innerHTML = `
+      <div style="width:10px;height:10px;border-radius:50%;background:#ff6b6b;
+                  border:2px solid #050505;box-shadow:0 0 8px rgba(255,107,107,0.7);
+                  flex-shrink:0;margin-left:-5px"></div>
+      <div style="flex:1;height:1.5px;background:rgba(255,107,107,0.5)"></div>
+    `;
+    // Necesita salir del flujo del grid → ponelo en week-day-grid con position absolute
+    grid.style.position = 'relative';
+    grid.appendChild(nowLine);
+  }
+
+  // ── Auto-scroll ────────────────────────────────────────────────────────────
   const scroll = document.getElementById('week-scroll');
-  scroll.scrollTop = Math.max(0, yFromH(hDec) - 80);
+  scroll.scrollTop = Math.max(0, yFromH(hDec ?? START_H) - 80);
 }
 
 // ── VISTA DÍA ────────────────────────────────────────────────────────────────

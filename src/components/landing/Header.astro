@@ -13,8 +13,8 @@ const demoPanels = [
       { href: "/demo/atleta",                label: "Panel Atleta",       icon: "ti-dashboard",      desc: "Progreso y stats" },
       { href: "/demo/atleta/entrenamientos", label: "Entrenamientos",  icon: "ti-calendar-event", desc: "Sesiones del mes" },
       { href: "/demo/atleta/ranking",         label: "Ranking",          icon: "ti-trophy",         desc: "Ranking Semanal" },
-      { href: "/demo/atleta/rachas",         label: "Rachas",          icon: "ti-trophy",         desc: "Rachas ganadas" },
-      { href: "/demo/atleta/perfil",         label: "Perfil",          icon: "ti-trophy",         desc: "Mi perfil" },
+      { href: "/demo/atleta/rachas",         label: "Rachas",          icon: "ti-flame",         desc: "Rachas ganadas" },
+      { href: "/demo/atleta/perfil",         label: "Perfil",          icon: "ti-man",         desc: "Mi perfil" },
 
     ],
   },
@@ -23,8 +23,8 @@ const demoPanels = [
     color: "blue",
     items: [
       { href: "/demo/entrenador",            label: "Dashboard",       icon: "ti-chart-bar",      desc: "Vista general" },
-      { href: "/demo/entrenador/atletas",    label: "Mis atletas",     icon: "ti-users",          desc: "Gestión de grupo" },
-      { href: "/demo/entrenador/planes",     label: "Planes",          icon: "ti-clipboard-list", desc: "Programas activos" },
+      // { href: "/demo/entrenador/atletas",    label: "Mis atletas",     icon: "ti-users",          desc: "Gestión de grupo" },
+      // { href: "/demo/entrenador/planes",     label: "Planes",          icon: "ti-clipboard-list", desc: "Programas activos" },
     ],
   },
   {
@@ -32,8 +32,8 @@ const demoPanels = [
     color: "orange",
     items: [
       { href: "/demo/tutor",                 label: "Seguimiento",     icon: "ti-heart",          desc: "Progreso del hijo/a" },
-      { href: "/demo/tutor/alertas",         label: "Alertas",         icon: "ti-bell",           desc: "Notificaciones" },
-      { href: "/demo/tutor/mensajes",        label: "Mensajes",        icon: "ti-message",        desc: "Chat con el cuerpo técnico" },
+      // { href: "/demo/tutor/alertas",         label: "Alertas",         icon: "ti-bell",           desc: "Notificaciones" },
+      // { href: "/demo/tutor/mensajes",        label: "Mensajes",        icon: "ti-message",        desc: "Chat con el cuerpo técnico" },
     ],
   },
 ];
@@ -64,18 +64,8 @@ const colorMap: Record<string, { icon: string; label: string; item: string; bg: 
 
     <!-- Logo -->
     <a href="#" class="flex items-center gap-2 group">
-      <div class="relative">
-        <div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-          <span class="material-symbols-outlined text-primary text-lg" style="font-size:18px;">
-            pulse_alert
-          </span>
-        </div>
-      </div>
-      <span class="font-display text-xl font-extrabold tracking-tighter text-white">
-        PULSO
-      </span>
+      <img src="logo.png" alt="logo" class="w-30 h-12" />
     </a>
-
     <!-- Nav -->
     <nav class="hidden md:flex items-center gap-1">
       {navLinks.map((link) => (
