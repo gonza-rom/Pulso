@@ -1,22 +1,23 @@
 ---
 export interface Props {
-  current: "login" | "atleta" | "entrenador" | "tutor";
+  current?: "login" | "atleta" | "entrenador" | "tutor" | "registro";
 }
 const { current } = Astro.props;
 
 const items = [
-  { id: "login",      label: "Login",         href: "/demo/login",      icon: "login" },
-  { id: "atleta",     label: "Atleta",         href: "/demo/atleta",     icon: "sprint" },
-  { id: "entrenador", label: "Entrenador",     href: "/demo/entrenador", icon: "sports" },
-  { id: "tutor",      label: "Padres/Tutores", href: "/demo/tutor",      icon: "family_restroom" },
+  { id: "login",      label: "Login",          href: "/demo/login",      icon: "login" },
+  { id: "atleta",     label: "Atleta",          href: "/demo/atleta",     icon: "sprint" },
+  { id: "entrenador", label: "Entrenador",      href: "/demo/entrenador", icon: "sports" },
+  { id: "tutor",      label: "Padres/Tutores",  href: "/demo/tutor",      icon: "family_restroom" },
+  { id: "registro",   label: "Registro",        href: "/demo/registro",   icon: "person_add" },
 ];
 ---
 
 <div
   class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] flex items-center gap-1.5 px-3 py-2 rounded-2xl border border-amber-500/20 bg-black/80 backdrop-blur-2xl shadow-2xl shadow-black/60"
 >
-  <!-- Ícono demo -->
-  <div class="flex items-center gap-1.5 pr-2.5 border-r border-white/10 mr-0.5">
+  <!-- Label demo -->
+  <div class="flex items-center gap-1.5 pr-2.5 border-r border-white/10 mr-0.5 shrink-0">
     <span class="material-symbols-outlined text-amber-400" style="font-size:16px;">visibility</span>
     <span class="text-[10px] font-semibold text-amber-400 uppercase tracking-widest hidden sm:block">Demo</span>
   </div>
@@ -30,7 +31,7 @@ const items = [
     <span class="hidden sm:block">Inicio</span>
   </a>
 
-  <div class="w-px h-4 bg-white/[0.08]"></div>
+  <div class="w-px h-4 bg-white/[0.08] shrink-0"></div>
 
   <!-- Interfaces -->
   {items.map(item => (

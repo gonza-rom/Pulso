@@ -1,0 +1,319 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Sidebar from "../../../components/demo/Sidebar.astro";
+import DemoBar from "../../../components/demo/DemoBar.astro";
+
+const streakCards = [
+  {
+    id: "sueno",
+    label: "Sueño Inteligente",
+    icon: "bedtime",
+    color: "tertiary",
+    streak: 5,
+    filled: 5,
+    next: "Recompensa 'Deep Rest'",
+    xp: "+50",
+    desc: "Racha de 5 días",
+  },
+  {
+    id: "entreno",
+    label: "Entreno en Ritmo",
+    icon: "bolt",
+    color: "secondary",
+    streak: 7,
+    filled: 7,
+    next: "Insignia 'Titan'",
+    xp: "+100",
+    desc: "Intensidad Óptima",
+  },
+  {
+    id: "balance",
+    label: "Balance",
+    icon: "balance",
+    color: "primary",
+    streak: 3,
+    filled: 3,
+    next: "+50 XP Bonus",
+    xp: "+25",
+    desc: "Carga equilibrada",
+  },
+  {
+    id: "hidratacion",
+    label: "Hidratación",
+    icon: "water_drop",
+    color: "blue-400",
+    streak: 12,
+    filled: 7,
+    next: "Avatar 'Hydro King'",
+    xp: "+25",
+    desc: "Meta diaria completada",
+  },
+  {
+    id: "carga",
+    label: "Sin Sobrecarga",
+    icon: "monitoring",
+    color: "error",
+    streak: 4,
+    filled: 4,
+    next: "Plan Recuperación",
+    xp: "+30",
+    desc: "Carga bajo control",
+  },
+];
+
+const timeline = [
+  { label: "Iniciado",           sub: "3 Días",   icon: "check_circle",  done: true,    active: false },
+  { label: "Constante",          sub: "7 Días",   icon: "emoji_events",  done: false,   active: true  },
+  { label: "King of Consistency",sub: "14 Días",  icon: "lock",          done: false,   active: false, opacity: "opacity-50" },
+  { label: "Leyenda",            sub: "30 Días",  icon: "military_tech", done: false,   active: false, opacity: "opacity-30" },
+  { label: "Elite Pulsar",       sub: "100 Días", icon: "auto_awesome",  done: false,   active: false, opacity: "opacity-20" },
+];
+
+const colorClass: Record<string, string> = {
+  "tertiary":  "text-tertiary  bg-tertiary/20  border-tertiary/50  bg-tertiary",
+  "secondary": "text-secondary bg-secondary/20 border-secondary/50 bg-secondary",
+  "primary":   "text-primary   bg-primary/20   border-primary/50   bg-primary",
+  "blue-400":  "text-blue-400  bg-blue-400/20  border-blue-400/50  bg-blue-400",
+  "error":     "text-error     bg-error/20     border-error/50     bg-error",
+};
+---
+
+<Layout title="Rachas · Atleta · PULSO">
+  <div class="flex min-h-screen">
+
+    <Sidebar role="atleta" current="rachas" />
+
+    <!-- Header mobile -->
+    <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/40 backdrop-blur-xl border-b border-white/10 md:hidden">
+      <span class="font-display text-xl font-extrabold tracking-tighter text-primary">PULSO</span>
+      <div class="flex items-center gap-4">
+        <button class="text-on-surface-variant hover:text-secondary transition-colors">
+          <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary text-[16px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="md:ml-64 flex-1 pt-20 md:pt-10 pb-32 px-4 md:px-8 transition-all">
+
+      <!-- Header -->
+      <header class="mb-8">
+        <h1 class="font-display text-2xl md:text-3xl font-bold text-white">
+          Tu Centro de Rendimiento
+        </h1>
+        <p class="text-on-surface-variant text-sm mt-1">
+          Rachas y Puntos · <span class="text-primary font-semibold">Nivel 24 Elite</span>
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- ===== RACHA GLOBAL ===== -->
+        <div class="lg:col-span-7 glass-card p-6 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+
+          <div class="relative z-10 text-center mb-6">
+            <h2 class="font-display font-semibold text-white text-xl">Racha Global</h2>
+            <p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mt-1">
+              Estado: Imparable
+            </p>
+          </div>
+
+          <!-- Anillo SVG -->
+          <div class="relative w-56 h-56 md:w-72 md:h-72 mb-8">
+            <svg class="w-full h-full" viewBox="0 0 320 320">
+              <!-- Track -->
+              <circle
+                cx="160" cy="160" r="140" fill="transparent"
+                class="stroke-surface-container-highest"
+                stroke-width="12"
+              />
+              <!-- Progress (~75%: 880*0.75 = 660 → offset 220) -->
+              <circle
+                cx="160" cy="160" r="140" fill="transparent"
+                class="stroke-primary"
+                stroke-width="12"
+                stroke-dasharray="880"
+                stroke-dashoffset="220"
+                stroke-linecap="round"
+                style="transform: rotate(-90deg); transform-origin: 50% 50%; filter: drop-shadow(0 0 8px rgba(143,214,255,0.5));"
+              />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span class="font-display text-6xl md:text-7xl font-extrabold text-white leading-none">7</span>
+              <span class="text-primary font-bold text-xl md:text-2xl tracking-tight">DÍAS</span>
+            </div>
+          </div>
+
+          <!-- Multiplier badge -->
+          <div class="bg-primary/10 border border-primary/25 px-6 py-3 rounded-full flex items-center gap-3 shadow-[0_0_20px_rgba(143,214,255,0.15)]">
+            <span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings:'FILL' 1;">rocket_launch</span>
+            <span class="font-display font-bold text-primary text-base md:text-lg">1.5× Multiplicador Activo</span>
+          </div>
+        </div>
+
+        <!-- ===== DESGLOSE XP ===== -->
+        <div class="lg:col-span-5 glass-card p-6">
+          <h3 class="font-display font-semibold text-white text-lg pb-4 border-b border-white/[0.06] mb-5">
+            Desglose de XP
+          </h3>
+
+          <div class="space-y-2">
+            {streakCards.map(s => {
+              const c = s.color;
+              const textC  = `text-${c}`;
+              const bgIcon = `bg-${c}/20`;
+              return (
+                <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.04] transition-colors">
+                  <div class="flex items-center gap-3">
+                    <div class={`w-10 h-10 rounded-lg ${bgIcon} flex items-center justify-center shrink-0`}>
+                      <span class={`material-symbols-outlined ${textC} text-[20px]`}>{s.icon}</span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-white">{s.label}</p>
+                      <p class="text-[11px] text-on-surface-variant">{s.desc}</p>
+                    </div>
+                  </div>
+                  <span class={`font-display font-bold text-lg ${textC}`}>{s.xp}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div class="mt-6 pt-5 border-t border-white/[0.06]">
+            <div class="flex justify-between items-end">
+              <div>
+                <p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Puntos Totales Semanales</p>
+                <p class="font-display text-5xl font-extrabold text-white leading-none">1,250</p>
+              </div>
+              <p class="text-secondary font-bold text-sm">+15% vs ayer</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TARJETAS DE RACHA ===== -->
+        <div class="lg:col-span-12 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+          {streakCards.map(s => {
+            const c = s.color;
+            const textC   = `text-${c}`;
+            const bgBadge = `bg-${c}/10`;
+            const barFill = `bg-${c}`;
+            const border  = `hover:border-${c}/40`;
+            return (
+              <div class={`glass-card p-5 transition-all duration-300 hover:-translate-y-1 group ${border}`}>
+                <div class="flex justify-between items-start mb-4">
+                  <span class={`material-symbols-outlined ${textC} text-2xl group-hover:scale-110 transition-transform`}>
+                    {s.icon}
+                  </span>
+                  <span class={`text-[10px] font-bold ${textC} ${bgBadge} px-2 py-0.5 rounded-full`}>
+                    Racha: {s.streak}
+                  </span>
+                </div>
+
+                <h4 class="font-display font-semibold text-white text-sm mb-3 leading-snug">{s.label}</h4>
+
+                <!-- Barras de progreso (7 días) -->
+                <div class="flex gap-1 mb-3">
+                  {Array.from({ length: 7 }).map((_, i) => (
+                    <div class={`h-1.5 flex-1 rounded-full ${i < s.filled ? barFill : "bg-white/10"}`}></div>
+                  ))}
+                </div>
+
+                <p class="text-[10px] text-on-surface-variant leading-snug">Próximo: {s.next}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- ===== CAMINO A LA GLORIA ===== -->
+        <div class="lg:col-span-12 glass-card p-6 md:p-8">
+          <h3 class="font-display font-semibold text-white text-lg mb-10">Camino a la Gloria</h3>
+
+          <div class="relative">
+            <!-- Track -->
+            <div class="absolute top-6 left-0 w-full h-1 bg-white/[0.05] rounded-full"></div>
+            <!-- Progress (45%) -->
+            <div class="absolute top-6 left-0 w-[45%] h-1 rounded-full bg-gradient-to-r from-primary to-secondary"></div>
+
+            <div class="relative flex justify-between items-start">
+              {timeline.map(step => (
+                <div class={`flex flex-col items-center gap-3 ${step.opacity ?? ""} ${step.active ? "" : ""}`}
+                     style={step.active ? "" : ""}>
+
+                  <!-- Nodo -->
+                  <div class={`relative z-10 flex items-center justify-center rounded-full transition-all
+                    ${step.active
+                      ? "w-14 h-14 bg-secondary border-4 border-background shadow-[0_0_20px_rgba(112,223,49,0.4)] animate-pulse"
+                      : step.done
+                        ? "w-12 h-12 bg-primary shadow-[0_0_16px_rgba(143,214,255,0.3)]"
+                        : "w-12 h-12 bg-surface-container-highest"
+                    }`}>
+                    <span
+                      class={`material-symbols-outlined text-[20px]
+                        ${step.active ? "text-black" : step.done ? "text-black" : "text-on-surface-variant"}`}
+                      style={step.done || step.active ? "font-variation-settings:'FILL' 1;" : ""}
+                    >
+                      {step.icon}
+                    </span>
+                  </div>
+
+                  <!-- Labels -->
+                  <div class="text-center">
+                    <p class={`text-[10px] md:text-xs font-bold uppercase tracking-wider
+                      ${step.active ? "text-secondary" : step.done ? "text-primary" : "text-on-surface-variant"}`}>
+                      {step.label}
+                    </p>
+                    <p class="text-[9px] md:text-[10px] text-on-surface-variant mt-0.5">{step.sub}</p>
+                  </div>
+
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Nav mobile -->
+    <nav class="fixed bottom-0 w-full z-40 flex justify-around items-center px-4 py-3 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-white/[0.05] rounded-t-2xl md:hidden"
+         style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom))">
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Inicio</span>
+      </a>
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta/entrenamientos">
+        <span class="material-symbols-outlined text-[22px]">fitness_center</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Entrenos</span>
+      </a>
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta/agenda">
+        <span class="material-symbols-outlined text-[22px]">calendar_today</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Agenda</span>
+      </a>
+      <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-all" href="/demo/atleta/ranking">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Ranking</span>
+      </a>
+      <a class="flex flex-col items-center text-primary" href="#">
+        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1;">local_fire_department</span>
+        <span class="text-[9px] font-bold uppercase mt-0.5">Rachas</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <DemoBar current="atleta" />
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".glass-card").forEach((el) => {
+    el.addEventListener("mousemove", (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty("--mouse-x", `${((e.clientX - rect.left) / rect.width) * 100}%`);
+      el.style.setProperty("--mouse-y", `${((e.clientY - rect.top) / rect.height) * 100}%`);
+    });
+  });
+</script>

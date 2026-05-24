@@ -3,7 +3,7 @@
 
 export interface Props {
   role: "atleta" | "entrenador" | "tutor";
-  current?: string; // página activa
+  current?: string;
 }
 
 const { role, current = "dashboard" } = Astro.props;
@@ -15,11 +15,13 @@ const config = {
     accent: "bg-primary/10 border-r-2 border-primary text-primary",
     cta: { label: "Iniciar Entrenamiento", icon: "add" },
     nav: [
-      { id: "dashboard",       label: "Dashboard",       icon: "grid_view",      href: "/demo/atleta" },
-      { id: "entrenamientos",  label: "Entrenamientos",  icon: "fitness_center", href: "/demo/atleta/entrenamientos" },
-      { id: "agenda",          label: "Agenda",          icon: "calendar_month", href: "/demo/atleta/agenda" },
-      { id: "alertas",         label: "Alertas",         icon: "warning",        href: "#", badge: true },
-      { id: "perfil",          label: "Mi Perfil",       icon: "person",         href: "#" },
+      { id: "dashboard",      label: "Dashboard",      icon: "grid_view",      href: "/demo/atleta" },
+      { id: "entrenamientos", label: "Entrenamientos", icon: "fitness_center", href: "/demo/atleta/entrenamientos" },
+      { id: "agenda",         label: "Agenda",         icon: "calendar_month", href: "/demo/atleta/agenda" },
+      { id: "ranking",        label: "Ranking",        icon: "leaderboard",            href: "/demo/atleta/ranking" },
+      { id: "rachas",         label: "Rachas",         icon: "local_fire_department",  href: "/demo/atleta/rachas", streak: 7 },
+      { id: "alertas",        label: "Alertas",        icon: "warning",                href: "#", badge: true },
+      { id: "perfil",         label: "Mi Perfil",      icon: "person",                 href: "#" },
     ],
   },
   entrenador: {
@@ -28,11 +30,11 @@ const config = {
     accent: "bg-blue-400/10 border-r-2 border-blue-400 text-blue-400",
     cta: { label: "Nueva Sesión", icon: "add" },
     nav: [
-      { id: "dashboard",  label: "Dashboard",   icon: "grid_view",        href: "/demo/entrenador" },
-      { id: "atletas",    label: "Mis Atletas", icon: "group",            href: "/demo/entrenador/atletas" },
-      { id: "planes",     label: "Planes",      icon: "list",   href: "/demo/entrenador/planes" },
-      { id: "alertas",    label: "Alertas",     icon: "warning",          href: "#", badge: true },
-      { id: "perfil",     label: "Mi Perfil",   icon: "person",           href: "#" },
+      { id: "dashboard",  label: "Dashboard",   icon: "grid_view", href: "/demo/entrenador" },
+      { id: "atletas",    label: "Mis Atletas", icon: "group",     href: "/demo/entrenador/atletas" },
+      { id: "planes",     label: "Planes",      icon: "list",      href: "/demo/entrenador/planes" },
+      { id: "alertas",    label: "Alertas",     icon: "warning",   href: "#", badge: true },
+      { id: "perfil",     label: "Mi Perfil",   icon: "person",    href: "#" },
     ],
   },
   tutor: {
@@ -41,10 +43,10 @@ const config = {
     accent: "bg-orange-400/10 border-r-2 border-orange-400 text-orange-400",
     cta: { label: "Ver Reporte", icon: "summarize" },
     nav: [
-      { id: "dashboard",  label: "Seguimiento", icon: "grid_view",   href: "/demo/tutor" },
-      { id: "alertas",    label: "Alertas",     icon: "notifications", href: "/demo/tutor/alertas", badge: true },
-      { id: "mensajes",   label: "Mensajes",    icon: "chat",        href: "/demo/tutor/mensajes" },
-      { id: "perfil",     label: "Mi Perfil",   icon: "person",      href: "#" },
+      { id: "dashboard", label: "Seguimiento", icon: "grid_view",     href: "/demo/tutor" },
+      { id: "alertas",   label: "Alertas",     icon: "notifications", href: "/demo/tutor/alertas", badge: true },
+      { id: "mensajes",  label: "Mensajes",    icon: "chat",          href: "/demo/tutor/mensajes" },
+      { id: "perfil",    label: "Mi Perfil",   icon: "person",        href: "#" },
     ],
   },
 };
@@ -76,15 +78,29 @@ const { label, color, accent, cta, nav } = config[role];
             : "text-on-surface-variant hover:bg-white/5 hover:text-primary"
           }`}
       >
+        <!-- Ícono -->
         <span
-          class="material-symbols-outlined text-[20px]"
+          class={`material-symbols-outlined text-[20px] ${
+            (item as any).streak ? "text-orange-400" : ""
+          }`}
           style={current === item.id ? "font-variation-settings:'FILL' 1;" : ""}
         >
           {item.icon}
         </span>
+
         {item.label}
+
+        <!-- Badge error (alertas) -->
         {item.badge && (
           <span class="absolute right-3 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+        )}
+
+        <!-- Badge racha (fuego + número) -->
+        {(item as any).streak && (
+          <span class="absolute right-2 flex items-center gap-0.5 bg-orange-400/15 border border-orange-400/25 text-orange-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+            <span class="material-symbols-outlined text-[11px]" style="font-variation-settings:'FILL' 1;">local_fire_department</span>
+            {(item as any).streak}
+          </span>
         )}
       </a>
     ))}
