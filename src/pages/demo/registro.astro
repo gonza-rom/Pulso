@@ -1,0 +1,354 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Crear cuenta · PULSO" demo="registro">
+
+  <main class="min-h-screen flex items-center justify-center px-4 py-24 relative">
+
+    <!-- Orbe de fondo -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(circle at 50% 40%, rgba(143,214,255,0.07), transparent 65%);"
+    ></div>
+
+    <div class="w-full max-w-md relative z-10">
+
+      <!-- Logo -->
+      <div class="text-center mb-10">
+        <a href="/" class="inline-flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+            <span class="material-symbols-outlined text-primary" style="font-size:20px;">pulse_alert</span>
+          </div>
+          <span class="font-display text-2xl font-extrabold tracking-tighter text-white">PULSO</span>
+        </a>
+        <p class="mt-3 text-white/40 text-sm">Creá tu cuenta y empezá gratis</p>
+      </div>
+
+      <!-- Card -->
+      <div class="glass-card p-8">
+
+        <!-- Selector de perfil -->
+        <p class="text-[10px] font-semibold text-white/30 uppercase tracking-widest mb-3">Me registro como</p>
+        <div class="grid grid-cols-3 gap-2 mb-6" id="profile-selector">
+
+          <button
+            data-profile="atleta"
+            data-href="/demo/atleta"
+            class="profile-btn flex flex-col items-center gap-2 px-3 py-3.5 rounded-xl border border-white/[0.08] text-white/40 text-[11px] font-semibold uppercase tracking-wider transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[22px] transition-colors">sprint</span>
+            Atleta
+          </button>
+
+          <button
+            data-profile="entrenador"
+            data-href="/demo/entrenador"
+            class="profile-btn flex flex-col items-center gap-2 px-3 py-3.5 rounded-xl border border-white/[0.08] text-white/40 text-[11px] font-semibold uppercase tracking-wider transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[22px] transition-colors">sports</span>
+            Entrenador
+          </button>
+
+          <button
+            data-profile="tutor"
+            data-href="/demo/tutor"
+            class="profile-btn flex flex-col items-center gap-2 px-3 py-3.5 rounded-xl border border-white/[0.08] text-white/40 text-[11px] font-semibold uppercase tracking-wider transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-[22px] transition-colors">family_restroom</span>
+            Tutor
+          </button>
+
+        </div>
+
+        <!-- Descripción contextual del perfil -->
+        <div
+          id="profile-desc"
+          class="mb-5 px-4 py-3 rounded-xl border text-xs leading-relaxed transition-all duration-300"
+          style="background: rgba(143,214,255,0.05); border-color: rgba(143,214,255,0.2); color: rgba(143,214,255,0.7);"
+        >
+          <span id="profile-desc-text">Organizá y optimizá tu rendimiento diario con IA.</span>
+        </div>
+
+        <!-- Nombre + Apellido -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div>
+            <label class="block text-xs text-white/40 mb-1.5 font-medium">Nombre</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">person</span>
+              <input
+                type="text"
+                placeholder="Juan"
+                class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs text-white/40 mb-1.5 font-medium">Apellido</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">badge</span>
+              <input
+                type="text"
+                placeholder="Pérez"
+                class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Deporte (solo atleta y entrenador) -->
+        <div class="mb-4" id="sport-field">
+          <label class="block text-xs text-white/40 mb-1.5 font-medium">Deporte principal</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">sports_soccer</span>
+            <select
+              class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white/70 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all appearance-none"
+            >
+              <option value="" class="bg-black">Seleccioná tu deporte</option>
+              <option value="basquet" class="bg-black">Básquet</option>
+              <option value="futbol" class="bg-black">Fútbol</option>
+              <option value="tenis" class="bg-black">Tenis</option>
+              <option value="natacion" class="bg-black">Natación</option>
+              <option value="atletismo" class="bg-black">Atletismo</option>
+              <option value="rugby" class="bg-black">Rugby</option>
+              <option value="otro" class="bg-black">Otro</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-white/20 text-[16px] pointer-events-none">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Relación con atleta (solo tutor) -->
+        <div class="mb-4 hidden" id="relation-field">
+          <label class="block text-xs text-white/40 mb-1.5 font-medium">Relación con el atleta</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">group</span>
+            <select
+              class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white/70 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all appearance-none"
+            >
+              <option value="" class="bg-black">Seleccioná tu relación</option>
+              <option value="padre" class="bg-black">Padre / Madre</option>
+              <option value="tutor" class="bg-black">Tutor legal</option>
+              <option value="familiar" class="bg-black">Familiar</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-white/20 text-[16px] pointer-events-none">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label class="block text-xs text-white/40 mb-1.5 font-medium">Correo electrónico</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">mail</span>
+            <input
+              type="email"
+              placeholder="juan@email.com"
+              class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all"
+            />
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-4">
+          <label class="block text-xs text-white/40 mb-1.5 font-medium">Contraseña</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/20 text-[18px]">lock</span>
+            <input
+              id="password-input"
+              type="password"
+              placeholder="Mínimo 8 caracteres"
+              class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-10 pr-10 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all"
+            />
+            <button id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/60 transition-colors">
+              <span class="material-symbols-outlined text-[18px]">visibility</span>
+            </button>
+          </div>
+          <!-- Strength bar -->
+          <div class="mt-2 flex gap-1">
+            <div class="strength-bar flex-1 h-1 rounded-full bg-white/[0.06] transition-all duration-300"></div>
+            <div class="strength-bar flex-1 h-1 rounded-full bg-white/[0.06] transition-all duration-300"></div>
+            <div class="strength-bar flex-1 h-1 rounded-full bg-white/[0.06] transition-all duration-300"></div>
+            <div class="strength-bar flex-1 h-1 rounded-full bg-white/[0.06] transition-all duration-300"></div>
+          </div>
+          <p id="strength-label" class="text-[10px] text-white/20 mt-1 transition-all duration-300"></p>
+        </div>
+
+        <!-- Términos -->
+        <div class="flex items-start gap-2.5 mb-6">
+          <input
+            type="checkbox"
+            id="terms"
+            class="w-4 h-4 mt-0.5 rounded border-white/20 bg-white/[0.04] text-primary focus:ring-primary/20 focus:ring-offset-0 shrink-0"
+          />
+          <label for="terms" class="text-xs text-white/40 leading-relaxed cursor-pointer">
+            Acepto los
+            <a href="#" class="text-primary hover:underline">Términos de uso</a>
+            y la
+            <a href="#" class="text-primary hover:underline">Política de privacidad</a>
+            de PULSO
+          </label>
+        </div>
+
+        <!-- Botón crear cuenta -->
+        <button
+          id="register-btn"
+          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-black font-bold text-sm neon-glow hover:scale-[1.01] active:scale-[0.99] transition-all duration-150"
+        >
+          <span class="material-symbols-outlined text-[18px]">person_add</span>
+          Crear cuenta
+        </button>
+      <!-- Pie -->
+      <p class="text-center text-[11px] text-white/70 mt-6">
+        ¿Ya tenés cuenta?
+        <a href="/in" class="text-primary hover:underline ml-1">Iniciá sesión</a>
+      </p>
+
+    </div>
+  </main>
+
+</Layout>
+
+<script>
+  type ProfileId = "atleta" | "entrenador" | "tutor";
+
+  const colorMap: Record<ProfileId, { border: string; text: string; bg: string; descBg: string; descBorder: string; descColor: string }> = {
+    atleta: {
+      border: "border-primary/40",
+      text: "text-primary",
+      bg: "bg-primary/10",
+      descBg: "rgba(143,214,255,0.05)",
+      descBorder: "rgba(143,214,255,0.2)",
+      descColor: "rgba(143,214,255,0.7)",
+    },
+    entrenador: {
+      border: "border-blue-400/40",
+      text: "text-blue-400",
+      bg: "bg-blue-400/10",
+      descBg: "rgba(96,165,250,0.05)",
+      descBorder: "rgba(96,165,250,0.2)",
+      descColor: "rgba(96,165,250,0.7)",
+    },
+    tutor: {
+      border: "border-orange-400/40",
+      text: "text-orange-400",
+      bg: "bg-orange-400/10",
+      descBg: "rgba(251,146,60,0.05)",
+      descBorder: "rgba(251,146,60,0.2)",
+      descColor: "rgba(251,146,60,0.7)",
+    },
+  };
+
+  const descMap: Record<ProfileId, string> = {
+    atleta: "Organizá y optimizá tu rendimiento diario con IA.",
+    entrenador: "Gestioná tu equipo, controlá cargas y prevení lesiones.",
+    tutor: "Seguí el progreso de tu hijo y coordiná con su entrenador.",
+  };
+
+  let selectedProfile: ProfileId = "atleta";
+  let selectedHref = "/demo/atleta";
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".profile-btn");
+  const descBox = document.getElementById("profile-desc") as HTMLElement;
+  const descText = document.getElementById("profile-desc-text") as HTMLElement;
+  const sportField = document.getElementById("sport-field") as HTMLElement;
+  const relationField = document.getElementById("relation-field") as HTMLElement;
+
+  function activate(btn: HTMLButtonElement) {
+    const profile = btn.dataset.profile as ProfileId;
+    selectedProfile = profile;
+    selectedHref = btn.dataset.href!;
+    const c = colorMap[profile];
+
+    // Reset all buttons
+    buttons.forEach((b) => {
+      const p = b.dataset.profile as ProfileId;
+      const bc = colorMap[p];
+      b.classList.remove(bc.border, bc.text, bc.bg);
+      b.classList.add("border-white/[0.08]", "text-white/40");
+    });
+
+    // Activate selected
+    btn.classList.remove("border-white/[0.08]", "text-white/40");
+    btn.classList.add(c.border, c.text, c.bg);
+
+    // Update desc box
+    descBox.style.background = c.descBg;
+    descBox.style.borderColor = c.descBorder;
+    descBox.style.color = c.descColor;
+    descText.textContent = descMap[profile];
+
+    // Toggle sport/relation fields
+    if (profile === "tutor") {
+      sportField.classList.add("hidden");
+      relationField.classList.remove("hidden");
+    } else {
+      sportField.classList.remove("hidden");
+      relationField.classList.add("hidden");
+    }
+  }
+
+  // Default: atleta
+  const defaultBtn = document.querySelector<HTMLButtonElement>('[data-profile="atleta"]');
+  if (defaultBtn) activate(defaultBtn);
+
+  buttons.forEach((btn) => btn.addEventListener("click", () => activate(btn)));
+
+  // Register button → redirect to demo
+  document.getElementById("register-btn")?.addEventListener("click", () => {
+    window.location.href = selectedHref;
+  });
+
+  // Password visibility toggle
+  const passwordInput = document.getElementById("password-input") as HTMLInputElement;
+  document.getElementById("toggle-password")?.addEventListener("click", () => {
+    const icon = document.querySelector("#toggle-password .material-symbols-outlined")!;
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      icon.textContent = "visibility_off";
+    } else {
+      passwordInput.type = "password";
+      icon.textContent = "visibility";
+    }
+  });
+
+  // Password strength
+  const strengthBars = document.querySelectorAll<HTMLElement>(".strength-bar");
+  const strengthLabel = document.getElementById("strength-label")!;
+
+  const strengthLevels = [
+    { color: "bg-red-500",    label: "Muy débil",  labelColor: "text-red-400" },
+    { color: "bg-orange-400", label: "Débil",      labelColor: "text-orange-400" },
+    { color: "bg-yellow-400", label: "Regular",    labelColor: "text-yellow-400" },
+    { color: "bg-secondary",  label: "Fuerte",     labelColor: "text-secondary" },
+  ];
+
+  function getStrength(pwd: string): number {
+    let score = 0;
+    if (pwd.length >= 8)                          score++;
+    if (/[A-Z]/.test(pwd))                        score++;
+    if (/[0-9]/.test(pwd))                        score++;
+    if (/[^A-Za-z0-9]/.test(pwd))                score++;
+    return score;
+  }
+
+  passwordInput?.addEventListener("input", () => {
+    const val = passwordInput.value;
+    const score = val.length === 0 ? 0 : getStrength(val);
+
+    strengthBars.forEach((bar, i) => {
+      bar.className = "strength-bar flex-1 h-1 rounded-full transition-all duration-300";
+      if (i < score && score > 0) {
+        bar.classList.add(strengthLevels[score - 1].color);
+      } else {
+        bar.classList.add("bg-white/[0.06]");
+      }
+    });
+
+    if (val.length === 0) {
+      strengthLabel.textContent = "";
+    } else {
+      const level = strengthLevels[score - 1];
+      strengthLabel.textContent = level.label;
+      strengthLabel.className = `text-[10px] mt-1 transition-all duration-300 ${level.labelColor}`;
+    }
+  });
+</script>
